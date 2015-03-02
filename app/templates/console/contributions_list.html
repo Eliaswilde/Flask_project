@@ -1,0 +1,15 @@
+{% extends "bc_admin/model/list.html" %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block tail %}
+{{ super() }}
+<script src="{{ url_for('console.js', file_name='contributions.js') }}"></script>
+{% endblock %}
+
+{% block model_menu_bar %}
+{{ super() }}
+
+{% endblock %}

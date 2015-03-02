@@ -1,0 +1,214 @@
+{% extends 'bc_admin/master.html' %}
+{% import 'bc_admin/lib.html' as lib with context %}
+{% import 'bc_admin/static.html' as admin_static with context %}
+
+{% macro extra() %}
+  <input name="_add_another" type="submit" class="btn btn-large" value="{{ _gettext('Save and Add') }}" />
+{% endmacro %}
+
+{% macro render_field(field) %}
+    <div class="control-group" data-field-name="{{ field.name }}">
+        {{ field.label(class='control-label') }}
+        <div class="controls form-group">
+            <div>
+                {{ field(class='form-control') }}
+                {% for e in field.errors %}
+                    <p class="bg-danger">{{ e }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block head %}
+    {{ super() }}
+    <link href="{{ admin_static.url(filename='datetimepicker/bootstrap-datetimepicker.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+            <section class="widget">
+                <header>
+                    <h4><i class="fa fa-user"></i> Account Profile <small>Create new or edit existing user</small></h4>
+                </header>
+                <div class="body">
+                    <form data-validate="parsley" method="post" novalidate="novalidate" class="form-horizontal label-left" id="user-form">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text-align-center">
+                                    <img id="avatar_image" style="height: 112px;" alt="64x64" src="{{ user.avatar }}" class="img-circle">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <h3 class="no-margin">{{ user.first_name }} {{ user.last_name }}</h3>
+                                <address>
+                                    <strong>{{ user.title }}</strong> at <strong>{{ user.company_name }}</strong><br>
+                                    <abbr title="Work email">e-mail:</abbr> <a href="mailto:{{ user.email }}">{{ user.email }}</a><br>
+                                </address>
+                            </div>
+                        </div>
+                        <fieldset>
+                            <legend>Account Edit Form <small>Some explanation text</small></legend>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Personal Information</legend>
+
+                            <div class="col-sm-4">
+
+                            {{ form.csrf_token }}
+                            {% if form.csrf_token.errors %}
+                                <div class="warning">You have submitted an invalid CSRF token</div>
+                            {% endif %}
+
+                            {{ render_field(form.company_name) }}
+                            {{ render_field(form.title) }}
+                            {{ render_field(form.first_name) }}
+                            {{ render_field(form.last_name) }}
+                            {{ render_field(form.email) }}
+                            {{ render_field(form.birth_date) }}
+
+                            </div>
+
+                            <div class="col-sm-4">
+
+                                <label>Profile picture</label>
+                                <div class="controls form-group">
+                                    <img id="avatar_preview" src="" style="display: none;">
+
+                                    <input id="fileupload" type="file" name="avatar_upload">
+                                </div>
+
+                                {{ form.avatar }}
+
+                                {{ render_field(form.bio) }}
+
+                            </div>
+
+                        </fieldset>
+
+
+                        <fieldset>
+                            <legend>Contact Information</legend>
+
+                            <div class="col-sm-4">
+                                <legend class="section">Shipping Contact Information</legend>
+                                {{ form.shipping_info.csrf_token }}
+                                {% if form.shipping_info.csrf_token.errors %}
+                                    <div class="warning">You have submitted an invalid CSRF token</div>
+                                {% endif %}
+
+                                {% for field in form.shipping_info if field.widget.input_type != 'hidden' %}
+                                    {{ render_field(field) }}
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-sm-4">
+                                <legend class="section">
+                                    Billing Contact Information
+                                    <div style="float: right; font-size: 12px;">
+                                        <label>{{ form.billing_equals_shipping }}<b>Same as shipping information</b></label>
+                                    </div>
+                                </legend>
+
+                                {{ form.billing_info.csrf_token }}
+                                {% if form.billing_info.csrf_token.errors %}
+                                    <div class="warning">You have submitted an invalid CSRF token</div>
+                                {% endif %}
+
+                                {% for field in form.billing_info if field.widget.input_type != 'hidden' %}
+                                    {{ render_field(field) }}
+                                {% endfor %}
+                            </div>
+
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Social Profiles</legend>
+
+                            <div class="col-sm-4">
+
+                            {{ render_field(form.fb_profile) }}
+                            {{ render_field(form.linkedin_profile) }}
+                            {{ render_field(form.twitter_profile) }}
+                            {{ render_field(form.youtube_profile) }}
+                            {{ render_field(form.imdb_profile) }}
+                            {{ render_field(form.website_profile) }}
+
+                            </div>
+
+                        </fieldset>
+
+                        <div class="form-actions">
+                            <button class="btn btn-primary" type="submit">Validate &amp; Submit</button>
+                            <button class="btn btn-default" type="button">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+{% endblock %}
+
+{% block tail %}
+  {{ super() }}
+   <script src="/console/static/console/js/admin/form.js"></script>
+   <script src="{{ admin_static.url(filename='datetimepicker/bootstrap-datetimepicker.js') }}"></script>
+   <script src="/console/static/console/js/jquery.html5-fileupload.js"></script>
+
+   <script>
+        $(function () {
+            $('#billing_equals_shipping').on('click', function (e) {
+                if ($(this).is(':checked')) {
+                   $('input[type="text"][id^="billing_info"]').attr('disabled', 'disabled');
+                   $('select[id^="billing_info"]').attr('disabled', 'disabled');
+                } else {
+                   $('input[type="text"][id^="billing_info"]').removeAttr('disabled');
+                   $('select[id^="billing_info"]').removeAttr('disabled');
+                }
+            });
+
+            $('#billing_info-country').on('change', function (e) {
+                if ($(e.target).val() == 'US') {
+                    $('div[data-field-name="billing_info-state_custom"]').val('').hide();
+                    $('div[data-field-name="billing_info-state"]').show();
+                } else {
+                    $('div[data-field-name="billing_info-state"]').val('').hide();
+                    $('div[data-field-name="billing_info-state_custom"]').show();
+                }
+            }).change();
+
+            $('#shipping_info-country').on('change', function (e) {
+                if ($(e.target).val() == 'US') {
+                    $('div[data-field-name="shipping_info-state_custom"]').val('').hide();
+                    $('div[data-field-name="shipping_info-state"]').show();
+                } else {
+                    $('div[data-field-name="shipping_info-state"]').val('').hide();
+                    $('div[data-field-name="shipping_info-state_custom"]').show();
+                }
+            }).change();
+
+        $('#avatar_image').attr('src', '{{ user.avatar }}');
+
+        $('#fileupload').fileUpload(
+		{
+			url: '{{ url_for('.upload_avatar') }}',
+			type: 'POST',
+			dataType: 'json',
+			beforeSend: function () {
+				$(document.body).addClass('uploading');
+			},
+			complete: function () {
+               //$('#avatar').attr('src', '/account/profileview/avatar?n=' + Math.random().toString(36).substr(2,9));
+			   $(document.body).removeClass('uploading');
+			},
+			success: function (result, status, xhr) {
+                $('#avatar_preview').attr('src', result.avatar).show();
+                $('#avatar').val(result.avatar);
+                // window.alert('Success! You have uploaded a new avatar');
+			}
+		}
+	);
+
+    });
+    </script>
+
+{% endblock %}

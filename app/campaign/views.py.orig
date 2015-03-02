@@ -1,0 +1,353 @@
+<<<<<<< HEAD
+from flask import Blueprint, render_template, request, redirect, url_for, send_from_directory, jsonify, json
+from models import Campaign, User, Comment
+=======
+from decimal import Decimal
+import uuid
+from flask import Blueprint, render_template, request, redirect, url_for, send_from_directory, jsonify, escape, session
+import paypalrestsdk
+from sqlalchemy import and_
+from app.console.admin.forms.checkoutform import CheckoutForm
+from config import APP_BASE_URL
+from models import Campaign, User, Reward, Order, ContactInfo
+>>>>>>> master
+from .forms import LoginForm, SignupForm
+from flask.ext import login
+from models.campaign import CampaignUpdate
+from models.order import OrderStatus
+from models.user import UserType
+from services.database import db
+from config import SQLALCHEMY_PAGINATE_MAX_RESULT
+
+campaign = Blueprint('campaign', __name__, static_folder="../static", template_folder="../templates", url_prefix="/c")
+
+@campaign.route("/<int:campaign_id>/")
+def index(campaign_id):
+    user = {'is_anonymous': True}
+    login_form = LoginForm()
+    signup_form = SignupForm()
+    campaign = Campaign.query.filter_by(id=campaign_id).one()
+<<<<<<< HEAD
+    comments = campaign.comments.filter(Comment.is_hidden==False).order_by(Comment.date.desc()).\
+        paginate(1, SQLALCHEMY_PAGINATE_MAX_RESULT)
+    # here the key user info, will come from login user.
+    # If the any logged in user, then info will be updated, other than s/he is anonymous
+    user.update({'id': 1, 'global_edit': False, 'global_hide': True, 'name': 'Manual', 'is_anonymous': False})
+    return render_template("campaign/index.html", user=user, user_json=json.dumps(user), model=campaign,
+                           login_form=login_form, signup_form=signup_form, comments=comments)
+=======
+    return redirect(url_for('.index_by_vanity_url',vanity_url=campaign.vanity_url))
+
+    #user = (login.current_user.is_authenticated() and [login.current_user] or [None])[0]
+    #return render_template("campaign/index.html", model=campaign, login_form=login_form,
+    #                       signup_form=signup_form, user=user)
+
+
+@campaign.route("/<string:vanity_url>/")
+def index_by_vanity_url(vanity_url):
+    login_form = LoginForm()
+    signup_form = SignupForm()
+    campaign = Campaign.query.filter_by(vanity_url=vanity_url).one()
+    user = (login.current_user.is_authenticated() and [login.current_user] or [None])[0]
+
+    support_link = APP_BASE_URL + url_for('.support_get',vanity_url=vanity_url) + "?reward_id="
+    share_link = APP_BASE_URL + url_for('.index_by_vanity_url',vanity_url=vanity_url)
+    print support_link
+    #return Content.query.join(Content.user).filter(and_(Content.is_active==True,ors)).order_by(Content.date.desc())[page+offset:(page+items_per_page)+offset]
+
+
+    backers = Order.query.filter(and_(Order.order_status_id==OrderStatus.Success,Order.campaign_id==campaign.id)).order_by(Order.created_date.desc())[0:100]
+
+    return render_template("campaign/index.html", model=campaign, login_form=login_form,
+                           signup_form=signup_form, user=user,support_link=support_link,share_link=share_link,backers=backers)
+
+@campaign.route("/<string:vanity_url>/update/create/", methods=['POST'])
+def create_update(vanity_url):
+    campaign = Campaign.query.filter_by(vanity_url=vanity_url).one()
+
+    if not can_do_update(campaign):
+        return jsonify({'status': 'failed'})
+
+    cu = CampaignUpdate(
+        user_id=campaign.user_id,
+        campaign_id=campaign.id,
+        text=request.values["text"]
+    )
+
+    db.session.add(cu)
+    db.session.commit()
+
+    return jsonify({'status': 'success', 'update_id':cu.id})
+
+@campaign.route("/<string:vanity_url>/update/edit/", methods=['POST'])
+def edit_update(vanity_url):
+    campaign = Campaign.query.filter_by(vanity_url=vanity_url).one()
+
+    if not can_do_update(campaign):
+        return jsonify({'status': 'failed'})
+
+    update_id = request.values["update_id"]
+    update = CampaignUpdate.query.filter_by(id=update_id).first()
+
+    if(update.campaign_id != campaign.id):
+        return jsonify({'status': 'failed'})
+
+    update.text=request.values["text"]
+    db.session.commit()
+
+    return jsonify({'status': 'success'})
+
+@campaign.route("/<string:vanity_url>/update/delete/", methods=['POST'])
+def delete_update(vanity_url):
+    campaign = Campaign.query.filter_by(vanity_url=vanity_url).one()
+
+    if not can_do_update(campaign):
+        return jsonify({'status': 'failed'})
+
+    update_id = request.values["update_id"]
+    update = CampaignUpdate.query.filter_by(id=update_id).first()
+
+    if(update.campaign_id != campaign.id):
+        return jsonify({'status': 'failed'})
+
+    update.is_active=False
+    db.session.commit()
+
+    return jsonify({'status': 'success'})
+
+def can_do_update(campaign):
+    current_user = (login.current_user.is_authenticated() and [login.current_user] or [None])[0]
+
+    if(current_user is None):
+        return False
+
+    if(current_user.id != campaign.user_id and current_user.user_type != UserType.Admin):
+        return False
+
+    return True
+
+
+@campaign.route("/<string:vanity_url>/support/", methods=['GET'])
+def support_get(vanity_url):
+    login_form = LoginForm()
+    signup_form = SignupForm()
+    campaign = Campaign.query.filter_by(vanity_url=vanity_url).one()
+    form = CheckoutForm()
+
+    current_reward = None
+    if request.args.get('reward_id'):
+        current_reward = Reward.query.filter_by(id=request.args.get('reward_id')).first()
+        form.reward_id.data = str(current_reward.id)
+
+    current_user = (login.current_user.is_authenticated() and [login.current_user] or [None])[0]
+    return render_template("campaign/purchase.html", model=campaign, login_form=login_form, signup_form=signup_form,form=form,current_reward=current_reward, user=current_user)
+
+
+@campaign.route("/<string:vanity_url>/support/cancel/", methods=['GET'])
+def support_cancel(vanity_url):
+    token = request.args.get('token')
+
+    payment_id = session['paypal_payment_id']
+    order = Order.query.filter_by(paypal_order_id=payment_id).first()
+    order.order_status_id=OrderStatus.Canceled
+    db.session.commit()
+
+    return redirect(url_for('.index_by_vanity_url',vanity_url=vanity_url))
+
+@campaign.route("/<string:vanity_url>/support/success/", methods=['GET'])
+def support_success(vanity_url):
+
+    payer_id = request.args.get('PayerID')
+    token = request.args.get('token')
+    print token
+
+    payment_id = session['paypal_payment_id']
+
+    payment = paypalrestsdk.Payment.find(payment_id)
+    payment.execute({"payer_id": payer_id})
+
+    order = Order.query.filter_by(paypal_order_id=payment_id).first()
+    order.order_status_id=OrderStatus.Success
+    db.session.commit()
+
+    login_form = LoginForm()
+    signup_form = SignupForm()
+    campaign = Campaign.query.filter_by(vanity_url=vanity_url).one()
+    share_url = return_url = APP_BASE_URL + url_for('.index_by_vanity_url',vanity_url=vanity_url)+"?usr_ref="+"aSdso90ssp"
+    current_user = (login.current_user.is_authenticated() and [login.current_user] or [None])[0]
+
+    return render_template("campaign/success.html", model=campaign, login_form=login_form, signup_form=signup_form,share_url=share_url,user=current_user,order=order)
+
+
+@campaign.route("/<string:vanity_url>/support/", methods=['POST'])
+def support_post(vanity_url):
+    login_form = LoginForm()
+    signup_form = SignupForm()
+    campaign = Campaign.query.filter_by(vanity_url=vanity_url).one()
+
+    checkout_form = CheckoutForm(request.form)
+    current_user = (login.current_user.is_authenticated() and [login.current_user] or [None])[0]
+    reward = None
+    if checkout_form.reward_id.data:
+        reward = Reward.query.filter_by(id=checkout_form.reward_id.data).first()
+
+    if current_user:
+        checkout_form.anon_info.form_class.is_form_optional=True
+
+    if reward:
+        checkout_form.shipping_info.form_class.is_form_optional= not reward.is_shipping_required
+
+    if not checkout_form.validate_on_submit():
+        return render_template("campaign/purchase.html", model=campaign, login_form=login_form, signup_form=signup_form,form=checkout_form,current_reward=reward,user=current_user)
+
+    if current_user == None:
+        current_user = User(
+            password=str(uuid.uuid4()),
+            email=checkout_form.anon_info.email.data,
+            user_type=UserType.Backer,
+            is_anonymous=True
+        )
+        db.session.add(current_user)
+        db.session.commit()
+
+
+    order = Order(
+        cost = reward.cost,
+        tax = 0,
+        contribution = checkout_form.contributionamount.data,
+        shipping = reward.shipping_fee,
+        total = float(checkout_form.contributionamount.data) + float(reward.cost),
+        order_status_id = OrderStatus.Created,
+        is_shipping=reward.is_shipping_required,
+        is_private=False,
+        shipping_date=reward.delivery_date,
+        user_id=current_user.id,
+        campaign_id=reward.campaign_id,
+        reward_id=reward.id,
+        paypal_order_id=''
+    )
+
+    if reward.is_shipping_required:
+        contact = ContactInfo()
+        contact.address = checkout_form.shipping_info.address.data
+        contact.city = checkout_form.shipping_info.city.data
+        contact.state = checkout_form.shipping_info.state.data
+        contact.postal_code = checkout_form.shipping_info.postal_code.data
+        contact.country = checkout_form.shipping_info.country.data
+        order.shipping_info = contact
+    db.session.add(order)
+    db.session.commit()
+
+    return_url = APP_BASE_URL + url_for('.support_success',vanity_url=vanity_url)
+    cancel_url = APP_BASE_URL + url_for('.support_cancel',vanity_url=vanity_url)
+
+    payment = paypalrestsdk.Payment({
+      "intent": "sale",
+      "payer": {
+        "payment_method": "paypal" },
+      "redirect_urls": {
+        "return_url": str(return_url),
+        "cancel_url": str(cancel_url)
+      },
+      "transactions": [ {
+        "amount": {
+          "total": '%.2f' % order.total,
+          "currency": "USD" },
+        "description": str(escape(reward.title)) } ] } )
+
+
+    response = payment.create()
+    if response:
+        payment_id = payment.id
+        session['paypal_payment_id'] = payment_id
+        order.paypal_order_id = payment_id
+        order.order_status_id=OrderStatus.Submitted
+        db.session.commit()
+        for link in payment.links:
+            if link.method == "REDIRECT":
+              redirect_url = link.href
+              return redirect(redirect_url)
+    else:
+        print "Paypal response failed: " + str(response)
+        print payment
+    return redirect(url_for('.support_get',vanity_url=vanity_url))
+    #return render_template("campaign/purchase.html", model=campaign, login_form=login_form, signup_form=signup_form)
+>>>>>>> master
+
+@campaign.route("/login", methods=['POST'])
+def do_login():
+    form = LoginForm()
+    if not form.validate():
+        return jsonify({
+            'status': 'error',
+            'fields_errors': form.errors
+        })
+    
+    user = User.query.filter_by(email=form.email.data, password=form.password.data).first()
+    if not user:
+        return jsonify({'status': 'error', 'general_error': 'Email and password do not match'})
+    
+    if not login.current_user.is_authenticated():
+        login.login_user(user)
+    return jsonify({'status': 'success'})
+
+@campaign.route("/logout")
+def logout():
+    login.logout_user()
+
+    return redirect(url_for('.index', campaign_id=request.args.get('campaign_id')))
+
+@campaign.route("/signup", methods=['POST'])
+def signup():
+    form = SignupForm()
+    if not form.validate():
+        return jsonify({
+            'status': 'error',
+            'fields_errors': form.errors
+        })
+    
+    user = User(first_name=form.first_name.data,
+                last_name=form.last_name.data,
+                username=form.email.data,
+                email=form.email.data,
+                password=form.password.data)
+    db.session.add(user)
+    db.session.commit()
+    
+    login.login_user(user)
+    
+    return jsonify({'status': 'success'})
+
+
+
+@campaign.route("/<int:campaign_id>/update/")
+def update(campaign_id):
+    campaign = Campaign.query.filter_by(id=campaign_id).one()
+    return render_template("campaign/index.html",model=campaign)
+
+@campaign.route('/campaign/static/css/<path:file_name>')
+def css(file_name):
+	return send_from_directory('app/static/campaign/stylesheets/', file_name)
+
+@campaign.route('/campaign/static/js/<path:file_name>')
+def js(file_name):
+	return send_from_directory('app/static/campaign/javascripts', file_name)
+
+@campaign.route('/campaign/static/images/<path:file_name>')
+def img(file_name):
+	return send_from_directory('app/static/campaign/images', file_name)
+
+@campaign.route('/images/<path:file_name>')
+def img2(file_name):
+	return send_from_directory('app/static/campaign/images', file_name)
+
+@campaign.route('/campaign/static/fonts/<path:file_name>')
+def font(file_name):
+	return send_from_directory('app/static/campaign/fonts', file_name)
+#------------------ AJAX API -----------------------------------------
+from .api import *
+comments_func = CommentView.as_view('comments')
+campaign.add_url_rule('/comment', view_func=comments_func, defaults={'campaign_id': None}, methods=['POST', 'PUT',
+                                                                                                    'DELETE'])
+campaign.add_url_rule('/comment/<int:campaign_id>', view_func=comments_func, methods=['GET','POST',
+                                                                                                    'PUT', 'DELETE'])

@@ -1,0 +1,521 @@
+{% extends "www/base.html" %}
+
+{% block content %}
+
+    <style>
+
+    </style>
+
+    <div class="background-image-overlay"></div>
+
+    <div id="outer-background-container" data-default-background-img="/www/static/img/bgx.jpg" style="background-image:url('/www/static/img/bgx.jpg');"></div>
+    <!-- end: #outer-background-container -->    
+
+
+    <!-- Outer Container -->
+    <div id="outer-container">
+      <style>
+            .info-header{
+                margin-right: 7.5%;
+                position: relative;
+                z-index: 10000;
+            }
+
+            .info-header .link{
+                position: relative;
+                top: -12px;
+                font-size: 13px;
+                color: #fff;
+                font-weight: 500;
+            }
+
+            .info-header form[role=search] {
+                width: 49%;
+                margin: 33px 20px 0 0;
+                display: inline-block !important;
+            }
+
+            .info-header form[role=search] .btn {
+                border-left-width: 0;
+                font-size: 14px;
+                 background-image: none;
+                border-bottom-right-radius: 4px;
+                border-top-right-radius: 4px;
+             }
+
+            .info-header form[role=search] input {
+                border-right-width: 0;
+            }
+
+            .info-header .create-link, .info-header .sign-up{
+                padding-right: 13px;
+                margin-right: 12px;
+                border-right: 1px solid #fff;
+            }
+
+            .info-header .discover-link{
+                margin-right: 20px;
+            }
+
+            .info-header input[type=text],.info-header input[type=password],.info-header .btn {
+                background-color: transparent;
+                border-color: white;
+                color: #fff;
+            }
+        </style>
+      <div  class="text-right pull-right info-header">
+        <a class="link create-link hidden" href="#">Create</a>
+        <a class="link discover-link hidden" href="#">Discover</a>
+        <form style="max-width: 250px;" role="search" class="hidden-xs  hidden">
+            <div class="input-group">
+                  <input type="text" class="form-control">
+                  <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit">
+                        &nbsp;
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                  </div>
+            </div>
+	    </form>
+        <a href="#" class="sign-up link" data-toggle="modal" data-target="#signup">Sign Up</a>
+        <a href="#" class="link" data-toggle="modal" data-target="#login">Login</a>
+     </div>
+
+
+
+      <!-- Left Sidebar -->
+      <section id="left-sidebar">
+        
+        <div class="logo">
+          <a href="/" class="link-scroll"><img src="/www/static/img/logo.png" alt="FanBacked"></a>
+        </div><!-- .logo -->
+
+        <!-- Menu Icon for smaller viewports -->
+        <div id="mobile-menu-icon" class="visible-xs" onClick="toggle_main_menu();"><span class="glyphicon glyphicon-th"></span></div>
+
+        <ul id="main-menu">
+          <li id="menu-item-featured" class="menu-item scroll"><a href="#featured">Featured</a></li>
+          <li id="menu-item-about" class="menu-item scroll"><a href="#about">About</a></li>
+          <li id="menu-item-carousel" class="menu-item scroll"><a href="#producers">Producers</a></li>
+          <li id="menu-item-grid" class="menu-item scroll"><a href="#backers">Backers</a></li>
+          <li id="menu-item-contact" class="menu-item scroll hidden"><a href="#projects">Projects</a></li>
+        </ul><!-- #main-menu -->
+
+      </section><!-- #left-sidebar -->
+      <!-- end: Left Sidebar -->
+
+
+      <section id="main-content" class="clearfix">
+
+        <article id="featured" class="section-wrapper clearfix" data-custom-background-img="/www/static/img/bgx.jpg">
+          <div class="content-wrapper clearfix">
+              <div class="text-center">
+              <h4>Exclusively Entertainment Fundraising</h4>
+              </div>
+              <div id="features-carousel" class="carousel slide with-title-indicators max-height" data-height-percent="85" data-ride="carousel">
+
+                <!-- Indicators - slide navigation -->
+                <ol class="carousel-indicators title-indicators">
+                  <li data-target="#features-carousel" data-slide-to="0" class="active">Ted Campbell</li>
+                </ol>
+
+                <style>
+                    .campaign-stats-box
+                    {
+                        margin-left:20px;
+                    }
+
+                    .campaign-stats-box .raised
+                    {
+                        font-size: 14px;
+                    }
+
+                    .campaign-stats-box .current
+                    {
+                        font-size: 24px;
+                    }
+
+                    .campaign-stats-box .cap
+                    {
+                        font-size: 14px;
+                    }
+                </style>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                  {% for i in range(1) %}
+                  <div class="item {{ 'active' if loop.index == 1 else '' }}">
+                    <div class="carousel-text-content text-left">
+                      <div class="text-center"><iframe width="560" height="315" src="//www.youtube.com/embed/xfeAq8Gy2jc" frameborder="0" allowfullscreen></iframe></div>
+                      <h2 class="title"><a href="/c/myrna-original-dramedy-television-series/">MYRNA - An Original Dramedy Television Series</a></h2>
+                      <h4>By: Ted Campbell</h4>
+                      <p>My career just wasn't tough enough, so I woke up one morning and decided to change my sex. MYRNA is a groundbreaking, original dramedy television series!</p>
+                      <div class="myStat pull-left" data-dimension="75" data-text="30%" data-width="12" data-fontsize="18" data-percent="30" data-fgcolor="#fff" data-bgcolor="rgba(29, 29, 29, 0.5)"></div>
+                            <div class="pull-left campaign-stats-box"><div class="raised">Raised</div>
+                            <div class="current">$1,000</div>
+                            <div class="cap">of $15,000</div></div>
+
+                      <p class="pull-right"><a href="/c/myrna-original-dramedy-television-series/" style="padding-bottom: 30px;" onclick="" class="btn btn-outline-inverse btn-sm">View Deal Page</a></p>
+                    </div>
+                  </div><!-- .item -->
+                  {% endfor %}
+                </div><!-- .carousel-inner -->
+
+                <!-- Controls -->
+                <a class="left carousel-control" href="#features-carousel" data-slide="prev"></a>
+                <a class="right carousel-control" href="#features-carousel" data-slide="next"></a>
+
+              </div><!-- #about-carousel -->
+
+          </div><!-- .content-wrapper -->
+        </article><!-- .section-wrapper -->
+
+        <article id="about" class="section-wrapper clearfix" data-custom-background-img="/www/static/img/bgx.jpg">
+           <div class="content-wrapper clearfix">
+            <div class="col-sm-10 col-md-9 pull-right">
+
+                <section class="feature-text">
+                  <h1>Discover Entertainment Opportunities</h1>
+                  <p>FanBacked is the premier community for producers, directors, and top talent to engage with their fans.</p>
+                  <p><a href="#text" class="link-scroll btn btn-outline-inverse btn-lg">Browse Projects</a></p>
+                </section>
+
+            </div><!-- .col-sm-10 -->
+          </div><!-- .content-wrapper -->
+        </article><!-- .section-wrapper -->
+
+        <article id="producers-and-backers" class="section-wrapper clearfix" data-custom-background-img="/www/static/img/bgx.jpg">
+           <div class="content-wrapper clearfix">
+            <div class="col-sm-10 col-md-9 pull-right">
+
+                <section class="feature-text">
+                  <h1>Exclusively Entertainment Fundraising</h1>
+                  <p>We enable top talent and rising stars to set high goals for what they can accomplish with the power of their fans.</p>
+                  <p><a href="#text" class="link-scroll btn btn-outline-inverse btn-lg" style="margin-right: 20px;">Producers</a><a href="#text" class="link-scroll btn btn-outline-inverse btn-lg">Backers</a></p>
+                  <br />
+                  <br />
+                  <em style="font-size:0.8em">Anyone can launch a campaign to fundraise online, but cultivating a community of fans to reach a million dollar goal requires a professional campaign management, campaign fulfillment, and engagement tools.</em>
+                  <p class="text-center">That’s where we step in.</p>
+                </section>
+
+            </div><!-- .col-sm-10 -->
+          </div><!-- .content-wrapper -->
+        </article><!-- .section-wrapper -->
+
+        <article id="producers" class="section-wrapper clearfix" data-custom-background-img="/www/static/img/bgx.jpg">
+          <div class="content-wrapper clearfix">
+            <div class="col-sm-11 col-md-10 pull-right">
+
+                <h1 class="section-title">Producers</h1>
+
+                <!-- grid -->
+                <section class="grid row clearfix clearfix-for-2cols">
+
+                  <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon fa fa-briefcase"></span>
+                      <div class="text-content">
+                        <h5>Professional Management</h5>
+                        <p>Our campaign management team members have collectively more than 100+ campaigns launched with more than 40m raised for project owners.  Build success from the start.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                  <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon glyphicon-leaf"></span>
+                      <div class="text-content">
+                        <h5>Exclusive Community</h5>
+                        <p>Projects curated within the FanBacked platform are individually approved and welcomed to join an exclusive community representing leaders in entertainment with amazing creative projects.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                  <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon fa fa-truck"></span>
+                      <div class="text-content">
+                        <h5>Campaign Fulfillment</h5>
+                        <p>Focus on being a producer, after a successful campaign it's time to start creating.  We take care of fulfilling your rewards.  Why waste time packing boxes and printing shipping labels?</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                  <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon glyphicon-usd"></span>
+                      <div class="text-content">
+                        <h5>Flexible Deal Structures</h5>
+                        <p>No goal? No problem.  Tailor your campaign to the goals of your project and continue engaging with your fans after your campaign has ended.  Contributions don’t stop if you reach your goal.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                    <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon glyphicon-signal"></span>
+                      <div class="text-content">
+                        <h5>Distribution</h5>
+                        <p>After you raise money to launch your creative project let us help you get it seen.  Our distribution services can help get your project at Sundance, on Netflix, in iTunes, and Amazon</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                    <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon fa fa-rss"></span>
+                      <div class="text-content">
+                        <h5>Gamify Social Sharing</h5>
+                        <p>Offer incentives to your most loyal fans who are sharing your campaign with their social networks.  Give a free bonus reward to the fans who bring more backers to your campaign.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                <p class="text-center"><a href="{{ url_for('.producer_application') }}" class="link-scroll btn btn-outline-inverse btn-lg">Apply to be a Producer</a></p>
+                </section><!-- end: grid -->
+
+            </div><!-- .col-sm-11 -->
+          </div><!-- .content-wrapper -->
+        </article><!-- .section-wrapper -->
+
+        <article id="backers" class="section-wrapper clearfix" data-custom-background-img="/www/static/img/bgx.jpg">
+          <div class="content-wrapper clearfix">
+            <div class="col-sm-11 col-md-10 pull-right">
+
+                <h1 class="section-title">Backers</h1>
+
+                <!-- grid -->
+                <section class="grid row clearfix clearfix-for-2cols">
+
+                  <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon fa fa-film"></span>
+                      <div class="text-content">
+                        <h5>Entertainment Only</h5>
+                        <p>Browse a curated community of entertainment projects hand selected by our team.  Movies, music, and games produced by top artists, directors, and rising stars.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                  <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon fa fa-ticket"></span>
+                      <div class="text-content">
+                        <h5>Exclusive VIP Rewards</h5>
+                        <p>Entertainment projects mean Hollywood style rewards.  Back campaigns for VIP rewards: backstage passes, prescreening parties, celebrity meet and greets, and one of a kind memorabilia.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                  <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon fa fa-compass"></span>
+                      <div class="text-content">
+                        <h5>Get Insider Access</h5>
+                        <p>Join the FanBacked community to get inside access to the best up and coming projects. Top members are invited to our exclusive quarterly networking events in Los Angeles.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                  <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon eicon-network"></span>
+                      <div class="text-content">
+                        <h5>Engaged Community</h5>
+                        <p>Join your favorite producers, musicians, and directors in support of their creative projects and engage in micro communities with other super fans.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                    <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon glyphicon-gift"></span>
+                      <div class="text-content">
+                        <h5>Earn Free Rewards</h5>
+                        <p>Unlock free bonus rewards for the campaigns you have backed by sharing the campaign with your social networks. Become a super fan and  spread the word about the campaign.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                    <!-- grid item -->
+                  <div class="grid-item col-md-6">
+                    <div class="item-content clearfix">
+                      <span class="icon glyphicon  eicon-flight"></span>
+                      <div class="text-content">
+                        <h5>Professional Fulfillment</h5>
+                        <p>Our producers focus on producing. We provide professional fulfilment and campaign management services to create the best possible experience for campaign contributors.</p>
+                      </div>
+                    </div><!-- end: .item-content -->
+                  </div><!-- end: .grid-item -->
+
+                <p class="text-center"><a href="#text" class="link-scroll btn btn-outline-inverse btn-lg">Browse Projects</a></p>
+                </section><!-- end: grid -->
+
+            </div><!-- .col-sm-11 -->
+          </div><!-- .content-wrapper -->
+        </article><!-- .section-wrapper -->
+
+        <article id="projects" class="section-wrapper clearfix hidden" data-custom-background-img="/www/static/img/bgx.jpg">
+          <div class="content-wrapper clearfix">
+            <div class="col-sm-11 pull-right">
+
+                <h1 class="section-title">Projects</h1>
+
+                <!-- feature columns -->
+                <section class="feature-columns row clearfix">
+
+                  <article class="feature-col col-md-4">
+                    <a href="" onclick="populate_and_open_modal(event, 'modal-content-6');" class="thumbnail linked">
+                      <div class="image-container">
+                        <img data-img-src="/www/static/img/project-3.jpg" class="lazy item-thumbnail" alt="Lorem Ipsum">
+                      </div>
+                      <div class="caption">
+                        <h5>Elit imperdiet</h5>
+                        <p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue.</p>
+                      </div><!-- .caption -->
+                    </a><!-- .thumbnail -->
+
+                    <div class="content-to-populate-in-modal" id="modal-content-6">
+                      <img data-img-src="/www/static/img/top-image1.jpg" class="lazy full-width" alt="Lorem Ipsum">
+                      <h1>Sed scelerisque</h1>
+                      <p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Etiam at ligula sit amet arcu laoreet consequat. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio</a>, sit amet. </p>
+                      <p>Laoreet consequat. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio, sit amet.</p>
+                      <p>Suspendisse molestie lorem odio, sit amet. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio test.</p>
+                    </div><!-- #modal-content-6 -->
+                  </article>
+
+                  <article class="feature-col col-md-4">
+                    <a href="" onclick="populate_and_open_modal(event, 'modal-content-7');" class="thumbnail linked">
+                      <div class="image-container">
+                        <img data-img-src="/www/static/img/project-2.jpg" class="lazy item-thumbnail" alt="Lorem Ipsum">
+                      </div>
+                      <div class="caption">
+                        <h5>Nullam ac rhoncus</h5>
+                        <p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Integer ultricies.</p>
+                      </div><!-- .caption -->
+                    </a><!-- .thumbnail -->
+
+                    <div class="content-to-populate-in-modal" id="modal-content-7">
+                      <img data-img-src="/www/static/img/top-image2.jpg" class="lazy full-width" alt="Lorem Ipsum">
+                      <h1>Sed scelerisque</h1>
+                      <p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Etiam at ligula sit amet arcu laoreet consequat. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio</a>, sit amet. </p>
+                      <p>Laoreet consequat. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio, sit amet.</p>
+                      <p>Suspendisse molestie lorem odio, sit amet. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio test.</p>
+                    </div><!-- #modal-content-7 -->
+                  </article>
+
+                  <article class="feature-col col-md-4">
+                    <a href="" onclick="populate_and_open_modal(event, 'modal-content-8');" class="thumbnail linked">
+                      <div class="image-container">
+                        <img data-img-src="/www/static/img/project-4.jpg" class="lazy item-thumbnail" alt="Lorem Ipsum">
+                      </div>
+                      <div class="caption">
+                        <h5>Aliquam adipiscing</h5>
+                        <p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet.</p>
+                      </div><!-- .caption -->
+                    </a><!-- .thumbnail -->
+
+                    <div class="content-to-populate-in-modal" id="modal-content-8">
+                      <img data-img-src="/www/static/img/top-image3.jpg" class="lazy full-width" alt="Lorem Ipsum">
+                      <h1>Sed scelerisque</h1>
+                      <p>Nullam ac rhoncus. Aliquam adipiscing eros non elit imperdiet congue. Etiam at ligula sit amet arcu laoreet consequat. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio</a>, sit amet. </p>
+                      <p>Laoreet consequat. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio, sit amet.</p>
+                      <p>Suspendisse molestie lorem odio, sit amet. Duis dictum lorem metus, vitae dapibus risus imperdiet nec. Suspendisse molestie lorem odio test.</p>
+                    </div><!-- #modal-content-8 -->
+
+                  </article>
+
+                </section><!-- end: .feature-columns -->
+
+              <!-- End: Section content to edit -->
+
+            </div><!-- .col-sm-10 -->
+          </div><!-- .content-wrapper -->
+        </article><!-- .section-wrapper -->
+
+      </section><!-- #main-content -->
+
+        <style>
+          #footer .menu {
+              border: 0 none;
+              margin: 0;
+              overflow: hidden;
+              padding: 0;
+            }
+            /* line 874, ../sass/styles.scss */
+            #footer .menu li {
+              display: inline-block;
+              list-style-image: none;
+              list-style-type: none;
+              margin-left: 0;
+              vertical-align: middle;
+              white-space: nowrap;
+            }
+            /* line 882, ../sass/styles.scss */
+            #footer .menu li:not(:last-child) a {
+              border-right: 1px solid rgba(255, 255, 255, 0.8);
+            }
+            /* line 886, ../sass/styles.scss */
+            #footer .menu li a {
+              font-weight: 300;
+              padding: 0 10px 0 10px;
+            }
+        </style>
+
+
+      <!-- Footer -->
+      <section id="footer">
+
+        <!-- Go to Top -->
+        <div id="go-to-top" onclick="scroll_to_top();"><span class="icon glyphicon glyphicon-chevron-up"></span></div>
+
+        <ul class="social-icons" style="font-size: 14px;">
+          <li><a style="opacity: 1;" href="http://www.facebook.com/FanBacked" target="_blank" title="Facebook"><span style="color: white" class="fa fa-facebook"></span></a></li>
+          <li><a style="opacity: 1;" href="https://twitter.com/fanbacked" target="_blank" title="Twitter"><span style="color: white" class="fa fa-twitter"></span></a></li>
+          <li class="hidden"><a style="opacity: 1;" href="https://www.linkedin.com/company/fanbacked" target="_blank" title="LinkedIn"><span style="color: white" class="fa fa-linkedin"></span></a></li>
+          <li><a style="opacity: 1;" href="https://www.google.com/+FanbackedPlatform" target="_blank" title="Google+"><span style="color: white" class="fa fa-google-plus"></span></a></li>
+        </ul>
+
+
+        <ul class="menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/faq/">FAQ</a></li>
+        </ul>
+        <ul class="menu" style="padding-bottom: 10px">
+            <li><a href="/terms/">Terms</a></li>
+            <li><a href="/privacy/">Privacy</a></li>
+        </ul>
+
+        <!-- copyright text -->
+        <div class="footer-text-line">&copy; 2014 Fanbacked</div>
+
+      </section>
+      <!-- end: Footer -->      
+
+    </div><!-- #outer-container -->
+    <!-- end: Outer Container -->
+
+    <!-- Modal -->
+    <!-- DO NOT MOVE, EDIT OR REMOVE - this is needed in order for popup content to be populated in it -->
+    <div class="modal fade" id="common-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <div class="modal-body">
+          </div><!-- .modal-body -->
+        </div><!-- .modal-content -->
+      </div><!-- .modal-dialog -->
+    </div><!-- .modal -->
+{% endblock %}

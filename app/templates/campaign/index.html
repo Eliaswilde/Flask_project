@@ -1,0 +1,823 @@
+{% extends "campaign/base.html" %}
+
+{% block header_meta %}
+        <meta property="fb:app_id" content="233477886849857" />
+        <meta property="og:type"  content="fanbacked:campaign" />
+        <meta property="og:url"   content="{{ share_link }}" />
+        <meta property="og:title" content="{{ model.title }}" />
+        <meta property="og:image" content="{{ model.thumbnail_url }}" />
+        <meta property="og:description" content="{{ model.short_description|escape }}" />
+{% endblock %}
+
+{% block content %}
+<script src="/c/campaign/static/js/vendor/underscore-min.js"></script>
+<script>
+    $(function(){
+        $('.product').click(function(){
+            var self = $(this);
+            window.location = "{{ support_link }}"+self.data("id");
+        });
+
+         $('#carousel-video').carousel({
+            interval: false
+        });
+
+        $('iframe').ready(function(){
+              var frameID = getFrameID($(this).attr('id'));
+              console.log(frameID)
+
+        });
+    });
+
+    // Example: function stopCycle, bound to onStateChange
+    function stopCycle(event) {
+        if(event.data == 1){
+            $('#carousel-video').carousel('pause');
+
+        }
+        console.log(event.data);
+    }
+
+    YT_ready(function(){
+    var frameID = getFrameID("carousel_video_1");
+    //var frameID = getFrameID("carousel_video_2");
+    //var frameID = getFrameID("carousel_video_3");
+    if (frameID) { //If the frame exists
+        console.log("frame rdy");
+        player = new YT.Player(frameID, {
+            events: {
+                "onStateChange": stopCycle
+            }
+        });
+    }
+});
+</script>
+
+<main>
+    <div class="container-non-responsive">
+	    	<div class="row">
+		    	<div id="content" class="col-md-9">
+		    		<h3 class="page-header">{{ model.title }}<span class="author visible-xs">By: David Beckham</span><span class="author-sm visible-sm">By: {{ model.user.first_name }} {{ model.user.last_name }}</span></h3>
+		    		
+		    		<div class="social hidden-xs clearfix">
+		    			<button class="btn btn-default pull-left btn-outline-inverse" data-toggle="modal" data-target="#follow">
+		    				Follow &nbsp;
+		    				<span class="glyphicon glyphicon-plus"></span>
+		    			</button>
+		    			<div class="pull-right group">
+
+
+		    				<a href="javascript:socialShare('https://www.facebook.com/sharer/sharer.php?u={{ share_link }}', 520, 350)" class="btn btn-default fa fa-facebook btn-outline-inverse"></a>
+		    				<a href="javascript:socialShare('https://twitter.com/share?url={{ share_link }}', 520, 350)" class="btn btn-default fa fa-twitter btn-outline-inverse"></a>
+		    				<a class="hidden" href="javascript:socialShare('http://www.linkedin.com/sharer.php?u={{ share_link }}', 520, 350)" class="btn btn-default fa fa-linkedin btn-outline-inverse"></a>
+		    				<a href="javascript:socialShare('https://plus.google.com/share?url={{ share_link }}', 520, 350)" class="btn btn-default fa fa-google-plus btn-outline-inverse"></a>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="modal fade" id="follow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    			  <div class="modal-dialog modal-sm">
+		    			    <div class="modal-content">
+		    			      <div class="modal-body">
+		    			      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    			 
+		    			      	<h1>Follow this Deal</h1>
+		    			      	<p>We will keep you updated on the progress of this deal and make sure to remind you before the deal ends
+		    			      	</p>
+		    			      	<div class="video clearfix">
+		    			      		<a href="#" class="pull-left"><img width="85" src="{{ model.user.avatar }}" alt="" /></a>
+		    			      		<p>By: {{ model.user.first_name }} {{ model.user.last_name }}<span>{{ model.user.title if model.user.title != None else '' }}</span></p>
+		    			      	</div>
+		    			      </div>
+		    			    
+		    			    </div>
+		    			  </div>
+		    		</div>
+		    		
+		    		<div class="modal fade" id="comments" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    			  <div class="modal-dialog modal-md">
+		    			    <div class="modal-content">
+		    			      <div class="modal-body clearfix">
+		    			      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    			 
+		    			      	<h1>Ask a Question / Leave a Comment</h1>
+		    			      	<p>Ask question or leave a comment below.</p>
+		    			      	<div class="comment clearfix">
+		    			      		<img width="85" src="{{ model.user.avatar }}" alt="" class="pull-left" />
+		    			      		<textarea></textarea>
+		    			      		<span class="caret"></span>
+		    			      		<p class="char-remaining">0/500</p>
+		    			      	</div>
+		    			      	<div class="checkbox3 clearfix">
+			    			      	<div class="form-group">
+			    			      		<input type="checkbox"/>
+			    			      		<label>Private comment to producer only</label>
+		    			      		</div>
+		    			      		<button type="submit" class="btn btn-default btn-lg">Submit</button>
+		    			      	</div>
+		    			      </div>
+		    			    
+		    			    </div>
+		    			  </div>
+		    		</div>
+		    		<div id="carousel-video" class="carousel slide" >
+			    		  <ol class="carousel-indicators hidden-xs">
+                             {% for video_link in raw_data['form_campaign_info']['videos'] %}
+			    		    <li data-target="#carousel-video" data-slide-to="{{ loop.index - 1 }}" {% if loop.index == 1 %} class="active" {% endif %}></li>
+                            {% endfor %}
+			    		  </ol>
+			    		  <div class="carousel-inner">
+                              {% for video_link in raw_data['form_campaign_info']['videos'] %}
+                              <div class="item text-center {% if loop.index == 1 %} active {% endif %}">
+				    		     {{ video_link | oembed(html=True, maxwidth=600, maxheight=600) }}
+				    		   </div>
+                              {% endfor %}
+			    		  </div>
+		    		</div>
+		    		
+		    		<div class="sidebar visible-sm">
+		    			<div class="row">
+	    					<div class="col-sm-5 project">
+	    						<img src="{{ model.user.avatar }}" alt="" class="img pull-left" />
+	    						<p class="description">By: <span class="owner">{{ model.user.first_name }} {{ model.user.last_name }}</span><span class="title">{{ model.user.title if model.user.title != None else '' }}</span></p>
+	    						<button class="btn btn-default hidden-xs btn-outline-inverse" data-toggle="modal" data-target="#comments">Contact Producer</button>
+	    					</div>
+		    				<div class="col-sm-7 back-this-project">
+		    					<div class="myStat pull-left" data-dimension="125" data-text="{{ model.percent_funded }}%" data-width="15" data-fontsize="22" data-percent="{{ model.percent_funded }}" data-fgcolor="#fff" data-bgcolor="#0d0d0d"></div>
+		    					<p class="pull-left">{{  model.funded | to_usd }}<span>of {{  model.funding_goal | to_usd }}</span></p>
+		    					<h4 class="pull-left">{{ model.days_left }} Days Left</h4>
+		    					<div class="btn-container">
+		    						<a href="support/" class="btn btn-default btn-outline-inverse">Back this Project</a>
+		    					</div>
+		    				</div>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="navigation hidden-xs">
+		    			<ul>
+		    				<li class="active"><a href="#summary-panel" data-toggle="tab">Summary</a></li>
+		    				<li><a id="txtCommentCount" href="#comment-panel" data-toggle="tab">Comments<span> {{ model.comments.filter_by(is_hidden=False).count() }}</span></a></li>
+		    				<li><a href="#backer-panel" data-toggle="tab">Backers<span>{{ backers | length }}</span></a></li>
+		    				<li><a href="#update-panel" data-toggle="tab">Updates<span>{{ model.active_updates.filter_by(is_exclusive=False).count() }}</span></a></li>
+                            <li><a href="#rewards-panel" data-toggle="tab">Rewards<span>{{ model.rewards.filter_by(is_active=True).count() }}</span></a></li>
+
+							
+							{% if is_backer %}
+							<li><a href="#exclusive-panel" data-toggle="tab">Exclusive<span>{{ model.active_updates.filter_by(is_exclusive=True).count() }}</span></a></li>
+							{% endif %}
+							
+							
+		    			</ul>
+		    		</div>
+
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="summary-panel">
+                            <article class="hidden-xs">
+                                <h4>Campaign Description</h4>
+                                {{ model.description|safe }}
+                            </article>
+                            <article class="last hidden hidden-xs">
+                                <h4>Most Recent Campaign Updates</h4>
+
+                            </article>
+                      </div>
+                      <div class="tab-pane" id="rewards-panel">
+		    			<div class="row">
+                             {% for reward in model.rewards.filter_by(is_active=True) | sort(attribute='ordinal') %}
+                            <div class="col-sm-4">
+                                <div class="product" data-id="{{ reward.id }}">
+                                    <p class="stats"><span class="price">${{ '%0d' % reward.cost }}</span> <span class="claimed">{{ reward.claimed }}</span> {% if reward.is_limited_quantity %} out of {{ reward.inventory }} {% endif %}Claimed </p>
+                                    <h6>{{ reward.title }}</h6>
+                                    <img width="" src="{{ reward.thumbnail_url }}" alt="" class="center-block img" style="width: 100%" />
+                                    <p class="description">{{ reward.description }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+		    			</div>
+                      </div>
+                      <div class="tab-pane" id="comment-panel">
+                          <div class="">
+                                <div>
+                                    <div class="comment-widget">
+                                        <div class="panel-heading">
+                                            <span class="glyphicon glyphicon-comment"></span>
+                                            <h3 class="panel-title"> Recent Comments</h3>
+                                            <!--<span class="label label-info"> 78</span>-->
+                                        </div>
+                                        <div class="panel-body">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    <form method="post" id="frmComment" class="form-action hide">
+                                                        <div class="form-group ">
+                                                            <textarea  name="comment" rows="3" class="form-control"></textarea>
+                                                        </div>
+                                                        <button {{ 'type="submit"' if user != None else 'data-toggle="modal" data-target="#login"' | safe }} class="btn">Comment</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                            <ul id="CommentContainer" class="list-group">
+                                                {% if comments and comments.items %}
+                                                    {% for comment in comments.items %}
+                                                        <li id="listItem{{ comment.id }}" class="list-group-item">
+                                                            <div class="row">
+                                                                <div class="col-xs-2 col-md-1">
+                                                                    <img src="{{ comment.user.avatar }}" width="80" class="img-responsive" alt="" /></div>
+                                                                <div class="col-xs-10 col-md-11">
+                                                                    <div class="comment-meta">
+                                                                        <div class="mic-info">
+                                                                            By: <a href="#">{{ comment.user.first_name }}</a> on {{ comment.date.strftime('%d %b %Y') }}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="comment-text">
+                                                                       <p> {{ comment.text }} </p>
+                                                                    </div>
+                                                                    {% if not user.is_anonymous %}
+                                                                    <div class="action">
+                                                                        {% if user.id == comment.user_id or user.global_edit or user.is_admin %}
+                                                                            <button data-id="{{ comment.id }}" type="button" class="btn btn-primary btn-xs comment-edit" title="Edit">
+                                                                                <span class="glyphicon glyphicon-pencil"></span>
+                                                                            </button>
+                                                                        {% endif %}
+                                                                        {% if user.id == comment.user_id or user.global_hide or user.is_admin %}
+                                                                        <button data-id="{{ comment.id }}" type="button" class="btn btn-danger btn-xs comment-hide" title="Hide">
+                                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                                        </button>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </ul>
+                                            {% if comments and comments.has_next %}
+                                                <a id="loadComments" href="{{ url_for('campaign.comments', campaign_id=model.id, page=comments.next_num) }}" class="btn btn-primary btn-sm btn-block" role="button"><span class="glyphicon glyphicon-refresh"></span> More</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                      </div>
+                      <style>
+                          .backer{
+                              margin-top:20px;
+                          }
+
+                          .backer img{
+                              margin-right:20px;
+                          }
+
+                          .backer .details .backer-name{
+                              display: block;
+                              font-weight:bold;
+                          }
+
+                          .backer .details .amount{
+                              display: block;
+                          }
+
+                      </style>
+
+                      <div class="tab-pane" id="backer-panel">
+                          <div class="row">
+                          {% for backer in backers %}
+                              <div class="backer hidden-sm clearfix col-md-6">
+                                <img width="85" src="{{ backer.user.avatar }}" alt="" class="img pull-left">
+                                <p class="details"><span class="backer-name">{{ backer.user.first_name }} {{ backer.user.last_name }}</span><span class="amount">{{ backer.total | to_usd }}</span></p>
+                              </div>
+                          {% endfor %}
+                           </div>
+                      </div>
+                      <div class="tab-pane" id="update-panel">
+
+                           <article class="hidden-xs">
+                             <h4>Campaign Updates</h4>
+                             {% if user.id == model.user_id or user.is_admin %}
+                            <div class="form-group ">
+                                         <div class="controls">
+                                             <div>
+                                                 <textarea style="height:400px" class="form-control" row="50" placeholder="What's new?" id="add_update" name="add_update" value=""></textarea>
+                                             </div>
+                                             <div class="error-list add_update-error-list"></div>
+                                         </div>
+                                     </div>
+                           <div class="btn pull-right btn-add-update">Update</div>
+                           {% endif %}
+                           </article>
+                           {% for update in model.active_updates.filter_by(is_exclusive=False) | reverse %}
+                                 <article class="hidden-xs" data-id="{{ update.id }}">
+                                <h5>{{ update.created_date.strftime('%d %b %Y') }}</h5>
+                                {{ update.text|safe }}
+                                {% if user.id == model.user_id or user.is_admin %}
+                                <div><button class="btn btn-edit-update">Edit</button><button class="btn btn-delete-update">Delete</button></div>
+                                {% endif %}
+                            </article>
+                           {% endfor %}
+
+                      </div>
+                      {% if is_backer %}
+                      <div class="tab-pane" id="exclusive-panel">
+
+                           <article class="hidden-xs">
+                             <h4>Campaign Exclusive Updates</h4>
+                             {% if user.id == model.user_id or user.is_admin %}
+                            <div class="form-group ">
+                                         <div class="controls">
+                                             <div>
+                                                 <textarea style="height:400px" class="form-control" row="50" placeholder="What's new?" id="add_exclusive_update" name="add_exclusive_update" value=""></textarea>
+                                             </div>
+                                             <div class="error-list add_exclusive_update-error-list"></div>
+                                         </div>
+                                     </div>
+                           <div class="btn pull-right btn-add-exclusive-update">Update</div>
+                           {% endif %}
+                           </article>
+                           {% for update in model.active_updates.filter_by(is_exclusive=True)  | reverse %}
+                                 <article class="hidden-xs" data-id="{{ update.id }}">
+                                <h5>{{ update.created_date.strftime('%d %b %Y') }}</h5>
+                                {{ update.text|safe }}
+                                {% if user.id == model.user_id or user.is_admin %}
+                                <div><button class="btn btn-edit-exclusive-update">Edit</button><button class="btn btn-delete-exclusive-update">Delete</button></div>
+                                {% endif %}
+                            </article>
+                           {% endfor %}
+
+                      </div>
+                      {% endif %}
+                    </div>
+                    <div class="sidebar visible-sm sidebar-sm">
+		    			<div class="row">
+                             {% for reward in model.rewards.filter_by(is_active=True,is_featured=True) | sort(attribute='ordinal') %}
+                            <div class="col-sm-4">
+                                <div class="product"  data-id="{{ reward.id }}">
+                                    <p class="stats"><span class="price">${{ '%0d' % reward.cost }}</span> <span class="claimed">{{ reward.claimed }}</span> {% if reward.is_limited_quantity %} out of {{ reward.inventory }} {% endif %}Claimed </p>
+                                    <h6>{{ reward.title }}</h6>
+                                    <img width="" src="{{ reward.thumbnail_url }}" alt="" class="center-block img" style="width: 100%" />
+                                    <p class="description">{{ reward.description }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+		    			</div>
+		    		</div>
+		    		
+				</div>
+			
+				<div class="sidebar col-md-3 hidden-sm">
+					<div class="project hidden-sm clearfix">
+						<img width="85" src="{{ model.user.avatar }}" alt="" class="img pull-left" />
+						<p class="description">By: <span class="owner">{{ model.user.first_name }} {{ model.user.last_name }}</span><span class="title">{{ model.user.title if model.user.title != None else '' }}</span></p>
+						<button class="btn btn-default hidden-xs btn-outline-inverse" data-toggle="modal" data-target="#comments">Contact Producer</button>
+						<button class="btn btn-default btn-lg pull-right visible-xs btn-outline-inverse">
+							<span class="glyphicon glyphicon-plus"></span>
+							&nbsp; Follow
+						</button>
+					</div>
+					
+					<div class="back-this-project hidden-xs">
+						<h4>{{ model.days_left }} Days Left</h4>
+						<div class="myStat center-block" data-dimension="125" data-text="{{ model.percent_funded }}%" data-width="15" data-fontsize="22" data-percent="{{ model.percent_funded }}" data-fgcolor="#fff" data-bgcolor="rgba(29, 29, 29, 0.5)"></div>
+						<p class="center-block">{{ model.funded | to_usd }}<span>of {{ model.funding_goal | to_usd  }}</span></p>
+						<a href="support/" class="btn btn-default btn-outline-inverse">Back this Project</a>
+					</div>
+					
+					<div class="back-this-project visible-xs">
+						<div class="myStat pull-left" data-dimension="125" data-text="{{ model.percent_funded }}%" data-width="15" data-fontsize="22" data-percent="{{ model.percent_funded }}" data-fgcolor="#fff" data-bgcolor="#0d0d0d"></div>
+						<p class="pull-left">{{ model.funded | to_usd  }}<span>of {{ model.funding_goal | to_usd  }}</span></p>
+						<h4 class="pull-left">{{ model.days_left }} Days Left</h4>
+						<div class="btn-container">
+							<a href="support/" class="btn btn-default btn-outline-inverse">Back this Project</a>
+						</div>
+					</div>
+					
+					<div class="campaign-description visible-xs clearfix">
+						<h3>Campaign Description</h3>
+						{{ model.description|safe }}
+						<button class="btn btn-default pull-right">
+							More
+							<span class="circle"></span>
+							<span class="circle"></span>
+							<span class="circle"></span>
+						</button>
+					</div>
+					
+					<div class="navigation visible-xs">
+						<ul class="list-group">
+						  <li class="list-group-item"><a href="#">Summary</a></li>
+						  <li class="list-group-item"><a href="#">Comments ({{ model.comments.filter_by(is_hidden=False).count() }})</a><span class="glyphicon glyphicon-chevron-right"></span></li>
+						  <li class="list-group-item"><a href="#">Backers ({{ backers | length }})</a><span class="glyphicon glyphicon-chevron-right"></span></li>
+						  <li class="list-group-item"><a href="#">Updates ({{ model.active_updates.count() }})</a></li>
+                          <li class="list-group-item"><a href="#">Rewards ({{ model.rewards.count() }} )</a></li>
+						</ul>
+					</div>
+
+                    {% for reward in model.rewards.filter_by(is_active=True,is_featured=True) | sort(attribute='ordinal')%}
+					<div class="product"  data-id="{{ reward.id }}">
+						<p class="stats"><span class="price">{{ reward.cost | to_usd }}</span> <span class="claimed">{{ reward.claimed }}</span> {% if reward.is_limited_quantity %} out of {{ reward.inventory }} {% endif %}Claimed </p>
+						<h6>{{ reward.title }}</h6>
+						<img width="" src="{{ reward.thumbnail_url }}" alt="" class="center-block img" style="width: 100%" />
+						<p class="description">{{ reward.description }}</p>
+					</div>
+                    {% endfor %}
+
+					
+					<div class="follow-comments hidden-xs" data-toggle="modal" data-target="#follow">
+						<button class="btn btn-default btn-outline-inverse">
+							Follow &nbsp;
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+
+					</div>
+				</div>
+				
+	    	</div>
+    	</div>
+</main>
+
+    <script>
+        //<![CDATA[
+        var user = {};
+        $(document).ready(function(){
+            $("#frmComment").removeClass('hide');
+            var ajax_call = function(url, method, data, callback){
+                    method = method || 'get'
+                    data = data || {}
+                    $.ajax({
+                        async: true,
+                        cache: method === 'get' || false,
+                        type: method.toUpperCase(),
+                        url: url,
+                        data: data,
+                        complete: function(jqXHR, textStatus){
+                            jqXHR.done(function(data){
+                                callback(data)
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                             callback(false)
+                            console.log(errorThrown)
+                        }
+                    });
+                }
+            var submit_comment = function(el){
+                var data = {
+                    comment: el.find('textarea[name=comment]').eq(0).val(),
+                    campaign_id: {{ model.id }},
+                    is_private: false
+                }
+                url = '{{ url_for('campaign.comments') }}'
+                btn = el.find('button[type=submit]')
+                if(data.comment.length){
+                    if(btn.hasClass('disabled')){
+                        return false;
+                    }
+                    btn.addClass('disabled')
+                    ajax_call(url, 'post', data, function(response){
+                        el.find('textarea[name=comment]').val('');
+                        btn.removeClass('disabled')
+                        if(response){
+                            if (typeof response.abort !== 'undefined'){
+                                alert(response.message);
+                                return false;
+                            }
+                            c_count = parseInt($("#txtCommentCount").children('span').html())
+                            $("#txtCommentCount").children('span').html(c_count + 1)
+                            comment = {
+                                 id: response.id,
+                                 text: data.comment,
+                                 date: response.date,
+                                 by: "",
+                                 user_id: ""
+                            }
+                            item = _.template($('#CommentItem').html(), {comment:comment})
+                            $("#CommentContainer").prepend(item);
+                            $(".comment-hide").on('click', function(e){
+                                e.preventDefault();
+                                hideComment($(this))
+                            });
+                            $(".comment-edit").on('click', function(e){
+                                $el = $(this)
+                                e.preventDefault();
+                                editComment($el, $("#mdlCommentEdit"));
+                            });
+                        }
+                    });
+                }
+            }
+            $("#frmComment").on('submit', function(e){
+                e.preventDefault();
+                if(user.is_anonymous){
+                    alert('Please login or create new account.');
+                    return false;
+                }
+                submit_comment($(this))
+                return false;
+            });
+            $("#loadComments").on('click', function(e){
+                me = $(this)
+                me.toggle();
+                e.preventDefault();
+                ajax_call(me.attr('href'), 'get', null, function(response){
+                    if(!response.objects.length){
+                        return;
+                    }
+                    $.each(response.objects, function(){
+                        item = _.template($('#CommentItem').html(), {comment:this})
+                        $("#CommentContainer").append(item);
+                    })
+                    if(response.meta.has_next){
+                        me.toggle();
+                        _cur_url = me.attr('href').replace(/page=[0-9]/, 'page=' + response.meta.next_num)
+                        me.attr('href', _cur_url)
+                    }
+                    $(".comment-hide").on('click', function(e){
+                        e.preventDefault();
+                        hideComment($(this))
+                    });
+                    $(".comment-edit").on('click', function(e){
+                        $el = $(this)
+                        e.preventDefault();
+                        editComment($el, $("#mdlCommentEdit"));
+                    });
+                });
+                return false;
+
+            });
+            $(".comment-hide").on('click', function(e){
+                e.preventDefault();
+                hideComment($(this))
+            });
+            $(".comment-edit").on('click', function(e){
+                $el = $(this)
+                e.preventDefault();
+                editComment($el, $("#mdlCommentEdit"));
+            });
+
+
+            var editComment = function($el, $modal){
+                data = {
+                    id: $el.data('id'),
+                    text: $el.parent().prev('.comment-text').html().trim()
+                }
+                form = _.template($('#CommentEditForm').html(), {comment: data })
+                $modal.find('.modal-body').html(form)
+                $modal.modal('toggle');
+                //============================
+                $modal.find('button.edit').on('click', function(e){
+                     e.preventDefault();
+                     $form = $modal.find('form').eq(0);
+                     data = {
+                        id: $form.find('input[name=id]').val(),
+                        text: $form.find('textarea[name=text]').val()
+                     }
+                     if(data.id.length && data.text.length){
+                        // validation completed, so go further
+                        url = '{{ url_for('campaign.comments') }}';
+                        ajax_call(url, 'put', data, function(response){
+                            if(response.success){
+                                $("#listItem" + data.id).find('.comment-meta a').eq(0).html(data.text);
+                                $("#listItem" + data.id).find('.comment-text').eq(0).html(data.text);
+                                $modal.modal('hide');
+                            }
+                        });
+                     }
+                });
+            }
+
+
+            var hideComment = function($el){
+                data = {id: $el.data('id'), is_hidden: true};
+                url = '{{ url_for('campaign.comments') }}';
+                ajax_call(url, 'put', data, function(response){
+                    if(response.success){
+                        $("#listItem" + data.id).remove();
+                        c_count = parseInt($("#txtCommentCount").children('span').html());
+                        $("#txtCommentCount").children('span').html(c_count - 1)
+                    }
+                });
+            }
+
+        });
+        //]]>
+    </script>
+    <script>
+        $(function(){
+           var customWysihtml5Templates = {
+                "font-styles": function(locale) {
+                    return "<li class='dropdown'>" +
+                        "<a class='btn btn-default btn-sm dropdown-toggle' data-toggle='dropdown' href='#'>" +
+                        "<i class='fa fa-font'></i>&nbsp;<span class='current-font'>" + locale.font_styles.normal + "</span>&nbsp;&nbsp;<i class='fa fa-caret-down'></i>" +
+                        "</a>" +
+                        "<ul class='dropdown-menu'>" +
+                        "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='div'>" + locale.font_styles.normal + "</a></li>" +
+                        "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='p'>" + locale.font_styles.normal + "</a></li>" +
+                        "<li><a data-wysihtml5-command='formatInline' data-wysihtml5-command-value='span'>" + locale.font_styles.normal + "</a></li>" +
+                        "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='h1'>" + locale.font_styles.h1 + "</a></li>" +
+                        "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='h2'>" + locale.font_styles.h2 + "</a></li>" +
+                        "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='h3'>" + locale.font_styles.h3 + "</a></li>" +
+                        "</ul>" +
+                        "</li>"
+                },
+                "emphasis":  function(locale) {
+                    return "<li>" +
+                        "<div class='btn-group'>"
+                        + "<a class='btn btn-default btn-sm ' data-wysihtml5-command='bold' title='CTRL+B'><i class='fa fa-bold'></i></a>"
+                        + "<a class='btn btn-default btn-sm ' data-wysihtml5-command='italic' title='CTRL+I'><i class='fa fa-italic'></i></a>"
+                        //,+ "<a class='btn' data-wysihtml5-command='underline' title='CTRL+U'>Underline</a>"
+                        + "</div>"
+                        + "</li>"
+                },
+                "lists": function(locale) {
+                    return "<li>"
+                        + "<div class='btn-group'>"
+                        + "<a class='btn btn-default btn-sm ' data-wysihtml5-command='insertUnorderedList' title='" + locale.lists.unordered + "'><i class='fa fa-list'></i></a>"
+                        + "<a class='btn btn-default btn-sm ' data-wysihtml5-command='insertOrderedList' title='" + locale.lists.ordered + "'><i class='fa fa-th-list'></i></a>"
+                        + "<a class='btn btn-default btn-sm ' data-wysihtml5-command='Outdent' title='" + locale.lists.outdent + "'><i class='fa fa-outdent'></i></a>"
+                        + "<a class='btn btn-default btn-sm ' data-wysihtml5-command='Indent' title='" + locale.lists.indent + "'><i class='fa fa-indent'></i></a>"
+                        + "</div>"
+                        + "</li>"
+                },
+
+                "link": function(locale) {
+                    return "<li>" +
+                        "<div class='bootstrap-wysihtml5-insert-link-modal modal fade'>" +
+                        "<div class='modal-dialog'>" +
+                        "<div class='modal-content'>" +
+                        "<div class='modal-header'>" +
+                        "<a class='close' data-dismiss='modal'>&times;</a>" +
+                        "<h3 class='modal-title'>" + locale.link.insert + "</h3>" +
+                        "</div>" +
+                        "<div class='modal-body'>" +
+                        "<input value='http://' class='bootstrap-wysihtml5-insert-link-url form-control'>" +
+                        "</div>" +
+                        "<div class='modal-footer'>" +
+                        "<a href='#' class='btn btn-default' data-dismiss='modal'>" + locale.link.cancel + "</a>" +
+                        "<a href='#' class='btn btn-primary' data-dismiss='modal'>" + locale.link.insert + "</a>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<a class='btn btn-default btn-sm' data-wysihtml5-command='createLink' title='" + locale.link.insert + "' tabindex='-1'><i class='fa fa-link'></i></a>" +
+                        "</li>"
+                },
+
+                "image": function(locale) {
+                    return "<li>" +
+                        "<div class='bootstrap-wysihtml5-insert-image-modal modal fade'>" +
+                        "<div class='modal-dialog'>" +
+                        "<div class='modal-content'>" +
+                        "<div class='modal-header'>" +
+                        "<a class='close' data-dismiss='modal'>&times;</a>" +
+                        "<h3 class='modal-title'>" + locale.image.insert + "</h3>" +
+                        "</div>" +
+                        "<div class='modal-body'>" +
+                        "<input value='http://' class='bootstrap-wysihtml5-insert-image-url form-control'>" +
+                        "</div>" +
+                        "<div class='modal-footer'>" +
+                        "<a href='#' class='btn btn-default' data-dismiss='modal'>" + locale.image.cancel + "</a>" +
+                        "<a href='#' class='btn btn-primary' data-dismiss='modal'>" + locale.image.insert + "</a>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>" +
+                        "<a class='btn btn-default btn-sm' data-wysihtml5-command='insertImage' title='" + locale.image.insert + "' tabindex='-1'><i class='fa fa-picture-o'></i></a>" +
+                        "</li>"
+                },
+
+                "html": function(locale) {
+                    return "<li>"
+                        + "<div class='btn-group'>"
+                        + "<a class='btn btn-default btn-sm ' data-wysihtml5-action='change_view' title='" + locale.html.edit + "'><i class='fa fa-pencil'></i></a>"
+                        + "</div>"
+                        + "</li>"
+                }
+            };
+
+
+
+
+            $('main #content .page-header').css('background-image','url(\'{{ model.thumbnail_url }}\')').css('background-size','65px').css('background-repeat','no-repeat');
+
+
+            $("#add_update").wysihtml5({
+                html: true,
+                customTemplates: customWysihtml5Templates,
+                parserRules:  wysihtml5ParserRules,
+                stylesheets: []
+            });
+			
+            $("#add_exclusive_update").wysihtml5({
+                html: true,
+                customTemplates: customWysihtml5Templates,
+                parserRules:  wysihtml5ParserRules,
+                stylesheets: []
+            });
+
+            $(document).on('click','.btn-add-update',function(e){
+                var text = $("#add_update").val();
+                createUpdate(text,false);
+                 $('#add_update').data("wysihtml5").editor.clear();
+
+                var template = '<article class="hidden-xs"><h5>Now</h5>' + text + '</article>';
+                $('#update-panel').prepend(template);
+
+            });
+            
+            $(document).on('click','.btn-add-exclusive-update',function(e){
+                var text = $("#add_exclusive_update").val();
+                 createUpdate(text,true);
+                 $('#add_exclusive_update').data("wysihtml5").editor.clear();
+
+                var template = '<article class="hidden-xs"><h5>Now</h5>' + text + '</article>';
+                $('#exclusive-panel').prepend(template);
+
+            });
+			
+            $(document).on('click','.btn-edit-update',function(e){
+                var self = $(this);
+                var article = self.closest('article');
+            });
+            
+       $(document).on('click','.btn-delete-update',function(e){
+                if(confirm("Are you sure you want to delete this update?")){
+                    var self = $(this);
+                    var article = self.closest('article');
+                    deleteUpdate(article.data('id'));
+                    article.remove();
+                }
+            });
+
+        });
+
+
+            function deleteUpdate(update_id){
+                $.post('/c/{{ vanity_url }}//update/delete/',{ "update_id" : update_id});
+            }
+
+            function editUpdate(update_id,text){
+                $.post('/c/{{ vanity_url }}/update/delete/',{ "update_id" : update_id,"text" : text});
+            }
+
+            function createUpdate(text,exclusive){
+				var exclusivePost = exclusive || false;
+                $.post('/c/{{ vanity_url }}/update/create/',{ "text" : text,"exclusive":exclusivePost});
+            }
+
+    </script>
+
+    <script type="text/template" id="CommentItem">
+        <li id="listItem<%=  comment.id %>" class="list-group-item">
+            <div class="row">
+                <div class="col-xs-2 col-md-1">
+                    <img src="<%= comment.avatar %>" class="img-circle img-responsive" alt="" /></div>
+                <div class="col-xs-10 col-md-11">
+          
+                    <div class="comment-meta">
+                        <div class="mic-info">
+                            By: <a href="#"><%= comment.by %></a> on <%= comment.date %>
+                        </div>
+                    </div>
+                    <div class="comment-text"> <%= comment.text %> </div>
+                    <% if(!user.is_anonymous){ %>
+                    <div class="action">
+                        <% if(user.id == comment.user_id || user.global_edit ){ %>
+                        <button data-id="<%= comment.id %>" type="button" class="btn btn-primary btn-xs comment-edit" title="Edit">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <% } %>
+                        <% if(user.id == comment.user_id || user.global_hide ){ %>
+                        <button data-id="<%= comment.id %>" type="button" class="btn btn-danger btn-xs comment-hide" title="Hide">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <% } %>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </li>
+    </script>
+
+    <script type="text/template" id="CommentEditForm">
+        <form class="form-modal">
+            <input type="hidden" value="<%= comment.id %>" name="id">
+            <textarea name="text" rows="3" class="form-control"><%= comment.text %></textarea>
+        </form>
+    </script>
+
+    <div class="modal fade" id="mdlCommentEdit" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="mdlCommentEditLbl">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="mdlCommentEditLbl">Edit Comment</h4>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary edit">Save changes</button>
+              </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

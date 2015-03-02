@@ -1,0 +1,15 @@
+{% macro render_field(field) %}
+{{ field.label }}
+{{ field(class_='form-control', **kwargs)|safe }}
+<ul class="errors" style="display: none;"></ul>
+{% endmacro %}
+
+{% macro render_checkbox_field(field) %}
+{{ field(**kwargs)|safe }}
+{{ field.label }}
+{% endmacro %}
+
+{% macro render_plain_field(field) %}
+{{ field(**kwargs)|safe }}
+{% endmacro %}
+

@@ -1,0 +1,93 @@
+{% extends "campaign/base.html" %}
+
+{% block content %}
+        <script>
+            $(document).ready(function(){
+                $('#checkout-wizard').bootstrapWizard({
+                    onTabClick: function(tab, navigation, index) {
+                        return false;
+                    },
+                    tabClass: '',
+                    nextSelector: '.btn-next'
+                });
+
+                $('.btn-next-2').click(function () {
+                    $('#checkout-wizard').bootstrapWizard('show', 2);
+                    return false;
+                });
+                 $('#checkout-wizard').bootstrapWizard('show', 2);
+            });
+
+
+        </script>
+        <main id="checkout-wizard">
+   		<div class="container">
+	   		<div class="row">
+	   			<div class="col-sm-6 col-sm-offset-3 navigation">
+	   				<ul class="steps">
+	   					<li>
+	   						<span>1</span>
+	   						<a href="#tab-contribute" data-toggle="tab">Contribute</a>
+	   					</li>
+	   					<li>
+	   						<span>2</span>
+	   						<a href="#tab-pay" data-toggle="tab">Pay</a>
+	   					</li>
+	   					<li>
+	   						<span>3</span>
+	   						<a href="#tab-rewards" data-toggle="tab">Earn Rewards</a>
+	   					</li>
+	   				</ul>
+	   			</div>
+	   		</div>
+	   		<div class="tab-content">
+				<div id="tab-rewards" class="tab-pane">
+					<div class="row">
+						<div class="col-sm-8 col-sm-offset-2">
+							<h3 class="message">Thanks for your Contribution!<span>(You will receive email shortly with an order confirmation)</span></h3>
+							<h4 class="message">Share this campaign to earn the Bonus Reward Free!<span>Earn a FREE Bonus Reward when {{ model.bonus_reward.referrals_needed }} or more of your friends also back this campaign</span></h4>
+							<div class="project-header clearfix">
+								<div class="col-md-2">
+									<h4>Bonus Reward</h4>
+								</div>
+								<div class="col-md-6">
+									<h5>{{ model.bonus_reward.title }}</h5>
+									<p>{{ model.bonus_reward.description }}</p>
+								</div>
+								<div class="col-md-4">
+									<img width="190" src="{{ model.bonus_reward.thumbnail_url }}" alt="" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 col-sm-offset-3">
+							<p class="text-center">Copy your personal link below or post to your social networks to share this campaign and earn your Free Bonus Reward!</p>
+
+							<div class="row social text-center">
+								<a style="font-size: 20px;" href="javascript:socialShare('https://www.facebook.com/sharer/sharer.php?u={{ share_link }}', 520, 350)" class="btn btn-default fa fa-facebook btn-outline-inverse"></a>
+		    				    <a style="font-size: 20px;" href="javascript:socialShare('https://twitter.com/share?url={{ share_link }}', 520, 350)" class="btn btn-default fa fa-twitter btn-outline-inverse"></a>
+		    				    <a style="font-size: 20px;" class="hidden" href="javascript:socialShare('http://www.linkedin.com/sharer.php?u={{ share_link }}', 520, 350)" class="btn btn-default fa fa-linkedin btn-outline-inverse"></a>
+		    				    <a style="font-size: 20px;" href="javascript:socialShare('https://plus.google.com/share?url={{ share_link }}', 520, 350)" class="btn btn-default fa fa-google-plus btn-outline-inverse"></a>
+							</div>
+
+							<div class="row">
+								<form>
+									<div class="col-xs-2">
+										<button class="btn btn-default">Copy</button>
+									</div>
+									<div class="col-xs-10">
+										<input type="text" class="form-control" value="{{ share_url }}" />
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div><!-- #tab-rewards -->
+			</div><!-- .tab-content -->
+   		</div><!-- .container -->
+ </main>
+
+
+
+{% endblock %}

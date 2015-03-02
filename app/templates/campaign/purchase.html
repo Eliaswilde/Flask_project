@@ -1,0 +1,406 @@
+{% extends "campaign/base.html" %}
+
+{% macro render_field_checkout(field, hidden=False) %}
+        <div class="form-group" {% if hidden %}style="display: none;"{% endif %}>
+                {{ field.label(class='control-label') }}
+                {{ field(class='form-control') }}
+                <label class="error">&nbsp;
+                {% for e in field.errors %}
+                    {{ e }}
+                {% endfor %}
+                </label>
+        </div>
+{% endmacro %}
+
+
+
+{% block content %}
+        <script>
+            var current_reward = null;
+            $(document).ready(function(){
+
+                $('.reward').click(function(e){
+                    self = $(this);
+                    loadReward(self);
+                });
+
+                function loadReward(reward){
+                    current_reward = reward;
+                     var reward_id = current_reward.data('id');
+                    var reward_cost = current_reward.data('cost');
+                    var reward_title = current_reward.data('title');
+
+
+                    $('#complete-checkout-form [name="reward_cost"]').val(reward_cost);
+                    $('#complete-checkout-form [name="reward_id"]').val(reward_id);
+
+                    if(current_reward.data('shipping')=='True')
+                        $('.shipping-info-block').show();
+                    else
+                        $('.shipping-info-block').hide();
+
+                    $('.project-header .reward-title').html(reward_title);
+
+                    window.location = '#checkout-wizard';
+
+                    $('.selected-rewards').empty();
+                    $('.selected-rewards').append(current_reward.clone());
+
+                    updateTotal();
+                }
+
+                $('#shipping_info-country').change(function(){
+                    updateTotal();
+                });
+                $('#shipping_info-state_custom').parents('.form-group').hide();
+
+                $('#contributionamount').keyup(function(e){
+                    self = $(this);
+
+                    $('#complete-checkout-form [name="additional_contribution_amount"]').val(self.val());
+                    updateTotal();
+                });
+                $('.project-header .additional-contribution-amount').html("0");
+
+                $( "#goto-payment" ).click(function() {
+                    //$( "#goto-payment").addClass('disabled');
+                    var reward_id = $('#complete-checkout-form [name="reward_id"]').val();
+                    var additional =  $('#complete-checkout-form [name="additional_contribution_amount"]').val();
+                    if(reward_id == '' && (additional == '' || additional == "0"))
+                    {
+                        $('.entry-error').removeClass('hidden');
+                        window.location = '#checkout-wizard';
+                    }else{
+                        $('.entry-error').addClass('hidden');
+                        $( "#complete-checkout-form" ).submit();
+                    }
+                    return false;
+                });
+
+                $('#contributionamount').jStepper({minValue:0, maxValue:10000,allowDecimals:false,default:0});
+                    
+                    // Signup form
+                    var $country_select = $('#shipping_info-country');
+                    var state_element_id = 'shipping_info-state';
+                    var state_custom_element_id = 'shipping_info-state_custom';
+                    
+                // validate signup form on keyup and submit
+                    jQuery.validator.addMethod("validate_state", function(value, element) {
+                        var country = $country_select.val();
+                        
+                        switch($(element).attr('id')) {
+                            case state_element_id:
+                                if(country == 'US' && !$(element).val()) {
+                                    return false;
+                                }
+                                break;
+                            case state_custom_element_id:
+                                if(country !== 'US' && !$(element).val()) {
+                                    return false;
+                                }
+                                break;
+                            default:
+                                // Just in case
+                                return false;
+                        }
+                        
+                        return true;
+                    }, "Enter your state");
+                    
+                var validator = $("#complete-checkout-form").validate({
+                    rules: {
+                        "shipping_info-firstname": "required",
+                        "shipping_info-lastname": "required",
+                        "shipping_info-address": "required",
+                        "shipping_info-city": "required",
+                            "shipping_info-state": "validate_state",
+                            "shipping_info-state_custom": "validate_state",
+                        "shipping_info-postal_code": "required",
+                        "shipping_info-country": "required",
+                        "anon_info-email": "required",
+                        "anon_info-fullname": "required",
+                        contributionamount: {
+
+                        }
+                    },
+                    messages: {
+                        "shipping_info-firstname": "Enter your firstname",
+                        "shipping_info-lastname": "Enter your lastname",
+                        "shipping_info-address": "Enter your address",
+                        "shipping_info-city": "Enter your city",
+                        "shipping_info-postal_code": "Enter your zipcode",
+                        "shipping_info-country": "Enter your country",
+                        "anon_info-fullname": "Enter your name",
+                        "anon_info-email": "Please give us an email to send your order confirmation to"
+                    },
+                    // the errorPlacement has to take the table layout into account
+                    errorPlacement: function(error, element) {
+                        console.log(error);
+                        if ( element.is(":radio") )
+                            error.appendTo( element.parent().next().next() );
+                        else if ( element.is(":checkbox") )
+                            error.appendTo ( element.next() );
+                        else
+                            error.appendTo( element.parent() );
+                    },
+                    // specifying a submitHandler prevents the default submit, good for the demo
+
+                    // set this class to error-labels to indicate valid fields
+                    success: function(label) {
+                        // set &nbsp; as text for IE
+                        label.html("&nbsp;").addClass("checked");
+                    },
+                    highlight: function(element, errorClass) {
+                        $(element).parent().next().find("." + errorClass).removeClass("checked");
+                    }
+                });
+                    
+                    $country_select.change(function() {
+                        if($(this).val() === 'US') {
+                            $('#' + state_custom_element_id).parent().hide();
+                            $('#' + state_element_id).parent().show();
+                        } else {
+                            $('#' + state_element_id).parent().hide();
+                            $('#' + state_custom_element_id).parent().show();
+                        }
+                    });
+
+                {% if current_reward %}
+                $('#complete-checkout-form [name="reward_cost"]').val("{{ current_reward.cost }}");
+                $('.project-header .reward-title').html("{{ current_reward.title }}");
+                    loadReward($('.reward[data-id="{{ form.reward_id.data }}"]'));
+                {% endif %}
+
+                $('#complete-checkout-form [name="additional_contribution_amount"]').val({{ form.contributionamount.data }});
+
+                {% if not (current_reward and current_reward.is_shipping_required) %}
+                $('.shipping-info-block').hide();
+                {% endif %}
+
+                updateTotal();
+            });
+
+            function setUSMode(is_us_mode){
+                   if(!is_us_mode){
+                        $('#shipping_info-state').parents('.form-group').hide();
+                        $('#shipping_info-state_custom').parents('.form-group').show();
+                    }else{
+                        $('#shipping_info-state_custom').parents('.form-group').hide();
+                        $('#shipping_info-state').parents('.form-group').show();
+                    }
+            }
+
+            function updateTotal(){
+                var reward_id = $('#complete-checkout-form [name="reward_id"]').val();
+
+
+                var additional =  parseFloat($('#complete-checkout-form [name="additional_contribution_amount"]').val());
+                var reward_cost = parseFloat($('#complete-checkout-form [name="reward_cost"]').val());
+                var shipping_fee = 0.0;
+                if(current_reward && current_reward.data('shipping')=='True'){
+                    var country =  $('#shipping_info-country').val();
+                    if(country == 'US'){
+                        shipping_fee = parseFloat(current_reward.data('shipping-fee'));
+                    } else {
+                        shipping_fee = parseFloat(current_reward.data('international-shipping-fee'));
+                    }
+                }
+                $('.project-header .contribution-shipping-fee').html(parseFloat(shipping_fee));
+
+
+
+                if(!reward_cost)
+                    reward_cost= 0.0;
+
+                if(!additional)
+                    additional= 0.0;
+
+                var total = 0;
+                if((reward_cost + shipping_fee) > additional){
+                    total = (reward_cost + shipping_fee);
+                    $('.project-header .additional-contribution-amount').html(0);
+                }
+                else if(additional > (reward_cost + shipping_fee))
+                {
+                    total = additional
+                    $('.project-header .additional-contribution-amount').html(additional - (reward_cost + shipping_fee));
+                }
+
+
+
+
+                $('.project-header .contribution-total').html(parseFloat(total));
+
+            }
+        </script>
+        <style>
+            .form-group .error{
+                color: red;
+            }
+
+             #checkout-wizard .form-group{
+                 margin-bottom: 0px;
+            }
+
+        </style>
+<main >
+   		<div class="container" id="checkout-wizard">
+	   		<div class="row">
+	   			<div class="col-sm-6 col-sm-offset-3 navigation">
+	   				<ul class="steps">
+	   					<li>
+	   						<span>1</span>
+	   						<b>Contribute</b>
+	   					</li>
+	   					<li>
+	   						<span>2</span>
+	   						Pay
+	   					</li>
+	   					<li>
+	   						<span>3</span>
+	   						Earn Rewards
+	   					</li>
+	   				</ul>
+	   			</div>
+	   		</div>
+	   		<div class="tab-content">
+				<div>
+					<div class="row">
+						<div class="col-sm-8 col-sm-offset-2">
+                            <form id="complete-checkout-form" method="post" action="">
+                                {{ form.shipping_info.csrf_token }}
+                                {{ form.anon_info.csrf_token }}
+                                {{ form.csrf_token }}
+                                <input type="hidden" name="additional_contribution_amount" value="" />
+                                <input type="hidden" name="reward_id" value="{{ form.reward_id.data }}" />
+                                <input type="hidden" name="reward_cost" value="" />
+                                <input type="hidden" name="contribution_total" value="" />
+                                <h4 class="title text-center">Select an Amount to Back this Campaign for Your Rewards</h4>
+                                <div class="project-header">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <img src="{{ model.thumbnail_url }}" width="100" alt="">
+                                        </div>
+                                        <div class="col-md-10">
+                                            <h2>{{ model.title }}</h2>
+                                            <h4>By: {{ model.user.first_name }} {{ model.user.last_name }}</h4>
+                                            <h3>Summary of Contribution:</h3>
+                                            <h5>Reward Selected: <span class="reward-title">[Select a Reward]</span></h5>
+                                            <h5>Additional Contribution: $<span class="additional-contribution-amount">0</span></h5>
+                                            <h5>Shipping Fee: $<span class="contribution-shipping-fee">0</span></h5>
+                                            <h3>Total Contribution: $<span class="contribution-total">0</span> USD</h3>
+                                        </div>
+
+                                    </div>
+                                    <div class="alert alert-danger hidden text-center entry-error">
+                                        Please select a reward or add a contribution. Thank you!
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 selected-rewards">
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="additional-contribution">
+                                         <h4>How much would you like to contribute?</h4>
+                                        <div class="form-inline" id="contribute">
+                                            <div class="form-group">
+                                                <label class="control-label">$</label>
+                                                <input type="text" id="contributionamount" name="contributionamount" class="form-control text-right" value="{{ form.contributionamount.data }}" />
+                                                <label>USD</label>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="shipping-info-block">
+                                         <div class="row">
+                                            <div  class="col-md-offset-1" style="padding-left: 15px">
+                                                <h4>Enter your shipping information:</h4>
+                                            </div>
+                                        </div><!-- .shipping -->
+                                        <div class="row">
+                                            <div class="col-md-5 col-md-offset-1">
+                                                {{ render_field_checkout(form.shipping_info.firstname) }}
+                                                {{ render_field_checkout(form.shipping_info.address) }}
+                                                {{ render_field_checkout(form.shipping_info.postal_code) }}
+                                            </div>
+                                            <div class="col-md-5">
+                                                {{ render_field_checkout(form.shipping_info.lastname) }}
+                                                {{ render_field_checkout(form.shipping_info.city) }}
+                                                {{ render_field_checkout(form.shipping_info.state) }}
+                                                {{ render_field_checkout(form.shipping_info.state_custom, hidden=True) }}
+                                                {{ render_field_checkout(form.shipping_info.country) }}
+                                            </div>
+                                        </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        {% if user %}
+                                        <button id="goto-payment" class="btn btn-default btn-next center-block" style="margin-top:20px;margin-bottom: 30px">Continue to Payment</button>
+                                        {% endif %}
+
+                                        {% if not user %}
+                                        <div class="create-account col-md-6">
+                                            <h4 class="title pull-left">Contact Information:</h4>
+                                            <button class="btn btn-default center-block btn-outline-inverse"  data-toggle="modal" data-target="#signup" onclick="return false; ">Create an Account</button>
+                                            <a href="#" class="have-account"c data-toggle="modal" data-target="#login" onclick="return false; ">Already have an account?</a>
+                                            <span class="or">Or</span>
+                                            <a href="{{ url_for('campaign.fb_login') }}" class="btn btn-default center-block btn-outline-inverse">Connect with Facebook</a>
+                                        </div>
+                                        <div class="login col-md-6">
+                                            <h5 class="title">Or just enter your Name and Email to confirm your order:</h5>
+                                            <form class="form-inline">
+                                                {{ render_field_checkout(form.anon_info.fullname) }}
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="display_name" type="checkbox"/>
+                                                        Don't display my name on the campaign page
+                                                    </label>
+                                                </div>
+                                                {{ render_field_checkout(form.anon_info.email) }}
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input name="opt_in" type="checkbox"/>
+                                                        Send me weekly insider news on exclusive campaign rewards
+                                                    </label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <button id="goto-payment" class="btn btn-default btn-next center-block btn-outline-inverse" style="margin-top:20px;margin-bottom: 30px">Continue to Payment</button>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h4 class="title">Which reward would you like?</h4>
+                                        {% for reward in model.rewards | sort(attribute='cost') %}
+                                        <div class="reward" data-id="{{ reward.id }}" data-cost="{{ reward.cost }}" data-title="{{ reward.title }}" data-shipping="{{ reward.is_shipping_required }}" data-shipping-fee="{{ reward.shipping_fee }}" data-international-shipping-fee="{{ reward.international_shipping_fee }}">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                <p class="price">{{ reward.cost | to_usd }}</p>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <h5 class="title">{{ reward.title }}</h5>
+                                                    <p class="description">{{ reward.description }}</p>
+                                                    <p class="shipping">{% if reward.is_shipping_required %} Shipping & Handling Required {% endif %}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </form>
+						</div>
+					</div>
+				</div><!-- #tab-contribute -->
+			</div><!-- .tab-content -->
+   		</div><!-- .container -->
+ </main>
+
+
+
+{% endblock %}

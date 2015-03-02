@@ -1,0 +1,162 @@
+{% extends 'bc_admin/master.html' %}
+{% import 'bc_admin/lib.html' as lib with context %}
+{% import 'bc_admin/static.html' as admin_static with context %}
+
+{% macro extra() %}
+  <input name="_add_another" type="submit" class="btn btn-large" value="{{ _gettext('Save and Add') }}" />
+{% endmacro %}
+
+{% macro render_field(field) %}
+    <div class="control-group" data-field-name="{{ field.name }}">
+        {{ field.label(class='control-label') }}
+        <div class="controls form-group">
+            <div>
+                {{ field(class='form-control') }}
+                {% for e in field.errors %}
+                    <p class="bg-danger">{{ e }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro render_checkbox(field) %}
+    <div class="control-group" data-field-name="{{ field.name }}">
+        <div>
+            <label>
+                {{ field }}
+                {{ field.label.text }}
+                {% for e in field.errors %}
+                    <p class="bg-danger">{{ e }}</p>
+                {% endfor %}
+            </label>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block head %}
+    {{ super() }}
+    <link href="{{ admin_static.url(filename='datetimepicker/bootstrap-datetimepicker.css') }}" rel="stylesheet">
+
+{% endblock %}
+
+{% block body %}
+    <div class="col-md-12">
+        <section class="widget">
+            <div class="body">
+             <h2>Settings</h2>
+
+
+             <fieldset>
+                <legend>Change Password</legend>
+
+                 <form action="/account/settingsview/change_password" method="post" class="form-horizontal label-left">
+
+                     {{ change_password_form.csrf_token }}
+                            {% if change_password_form.csrf_token.errors %}
+                                <div class="warning">You have submitted an invalid CSRF token</div>
+                            {% endif %}
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+
+                    {{ render_field(change_password_form.old_password) }}
+
+                            <div class="control-group">
+                            <div class="controls form-group">
+                                <div><a href="/account/requestresetpassword">Forgot Password?</a></div>
+                            </div>
+                            </div>
+                    {{ render_field(change_password_form.new_password) }}
+                    {{ render_field(change_password_form.confirm) }}
+
+                        </div>
+                    </div>
+
+                     <div class="row">
+                         <div class="col-md-4">
+                            <input type="submit" value="Save" class="btn btn-primary">
+                           </div>
+                        </div>
+                 </form>
+
+             </fieldset>
+
+
+             <fieldset>
+                <legend>Notifications <small>Email settings</small></legend>
+             </fieldset>
+
+                <form action="/account/settingsview/save_notifications" method="post" class="form-horizontal label-left">
+
+                    {{ notifications_form.csrf_token }}
+                            {% if notifications_form.csrf_token.errors %}
+                                <div class="warning">You have submitted an invalid CSRF token</div>
+                            {% endif %}
+
+             <div class="row">
+
+
+                <div class="col-md-5">
+                    <b>FanBacked Notifications</b>
+                    {{ render_checkbox(notifications_form.notif_featured_newsletter) }}
+                    {{ render_checkbox(notifications_form.notif_partner_events) }}
+                    {{ render_checkbox(notifications_form.notif_sneak_peeks) }}
+                </div>
+
+
+                <div class="col-md-5">
+                    <b>Projects You've Backed</b>
+                    {{ render_checkbox(notifications_form.notif_project_updates) }}
+
+                    <b>Projects You Created</b>
+                    {{ render_checkbox(notifications_form.notif_backer_summary) }}
+                    {{ render_checkbox(notifications_form.notif_comments) }}
+                    {{ render_checkbox(notifications_form.notif_follower_summary) }}
+                </div>
+
+
+             </div>
+
+            <div class="row">
+             <div class="col-md-4">
+                <input type="submit" value="Save" class="btn btn-primary">
+               </div>
+            </div>
+
+              </form>
+
+
+             <fieldset>
+                <legend>Account settings <small>Delete your account</small></legend>
+             </fieldset>
+
+             <form action="/account/settingsview/delete_account" method="post" class="form-horizontal label-left">
+
+                 {{ delete_form.csrf_token }}
+                            {% if delete_form.csrf_token.errors %}
+                                <div class="warning">You have submitted an invalid CSRF token</div>
+                            {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-9">
+                            <p>
+                                This is permanent and irreversible. You will lose ALL account information.
+                            </p>
+                            <input onclick="return confirm('Do you really want to remove ALL your data? (Can not be undone)')" type="submit" value="Delete my account" class="btn btn-primary">
+                        </div>
+
+                    </div>
+                 </form>
+
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block tail %}
+  {{ super() }}
+   <script src="/console/static/console/js/admin/form.js"></script>
+   <script src="{{ admin_static.url(filename='datetimepicker/bootstrap-datetimepicker.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,15 @@
+*.pyc
+venv
+virtualenv
+.idea
+__pycache__
+deploy.bat
+ssl-certs/
+ve
+test.db
+uploads/*
+.project
+.pydevproject
+.sass-cache
+*~
+local_config.py

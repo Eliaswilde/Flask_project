@@ -1,0 +1,55 @@
+{% extends "campaign/base.html" %}
+
+{% block content %}
+<main>
+    <div class="container">
+       <section id="main-content" class="clearfix">
+        <article id="producer-application" class="section-wrapper clearfix" data-custom-background-img="/www/static/img/bgx.jpg">
+           <div class="content-wrapper clearfix">
+                <div class="col-sm-12 col-md-12 pull-right">
+                    <h2>Producer Application</h2>
+                    <p>
+                        FanBacked is an exclusive community to connect with Producers with their fans to support all
+                        star creative projects in entertainment. Apply bellow to become producer and launch your first
+                        project.
+                    </p>
+                    <div>
+                        <form action="" method="post">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="Producer name" name="name" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" placeholder="Email address" name="email" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="tel" placeholder="Phone Number" name="phone_number" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <small>
+                                            *We are constantly reviewing more producers to launch projects on our platform.
+                                            You will typically receive notification within 48 hours, <a href="#">Contact Us</a> if you have an urgent
+                                            need. or any further question.
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="summary" rows="10"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-default">Apply Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- .col-sm-10 -->
+          </div><!-- .content-wrapper -->
+        </article><!-- .section-wrapper -->
+      </section><!-- #main-content -->
+    </div>
+</main>
+
+{% endblock %}

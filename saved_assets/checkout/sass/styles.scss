@@ -1,0 +1,143 @@
+@import "variables";
+@import "bootstrap";
+@import "compass";
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../fonts/bootstrap/glyphicons-halflings-regular.eot');
+    src: url('../fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/bootstrap/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/bootstrap/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+
+//fonts
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
+
+//colors
+$borderColor: rgba(255,255,255, .8);
+
+//general
+.container {
+	max-width: 1050px !important;
+}
+input[type=text],input[type=password], .btn {
+	background-color: transparent;
+	border-color: $borderColor;
+	color: #fff;
+	&:focus, &:hover {
+		background-color: transparent;
+		color: #fff;
+		border-color: $borderColor;
+		@include box-shadow(none);
+	}
+}
+.btn {
+	//font-size: 12px;
+	height: 34px;
+}
+.btn-lg {
+	font-size: 21px !important;
+	height: auto !important;
+}
+h1,h2,h3,h4,h5,h6 {
+	margin: 0;
+}
+label {
+	font-weight: 300;
+}
+select {
+	-webkit-appearance: none !important;
+	-moz-appearance: none !important;
+	background-color: #000 !important;
+	background-image: image-url("downArrow2.png") !important;
+	background-position: 97% center !important;
+	background-repeat: no-repeat !important;
+	color: #fff !important;
+}
+
+//HEADER
+header {
+	margin-bottom: 20px;
+	.logo {
+		border: 1px solid $borderColor;
+		border-top-width: 0;
+		text-align: center;
+		width: 160px;
+		line-height: 100px;
+	}
+	.search {
+		padding-top: 5px;
+	}
+	form {
+		width: 185px;
+		.btn {
+			border-right-width: 0;
+			padding: 6px;
+			font-size: 16px;
+			.glyphicon {
+				@include rotate(90deg);
+			}
+		}
+		.form-control {
+			border-left-width: 0;
+			font-weight: 600;
+			&:focus {
+				font-weight: 400;
+			}
+		}
+	}
+	.link-group {
+		a {
+			padding: 0 15px;
+			line-height: 32px;
+		}
+		a:first-child {
+			border-right: 1px solid $borderColor;
+		}
+	}
+}
+
+//CONTENT
+@media (max-width: $screen-lg-desktop) {
+	.login .checkbox {
+		margin-left: 0 !important;
+	}
+}
+@media (max-width: $screen-desktop) {
+	.create-account {
+		margin-top: 30px !important;
+	}
+}
+
+
+//FOOTER
+footer {
+	.social {
+		a {
+			display: inline-block;
+			width: 24px;
+			height: 24px;
+			margin: 0 3px;
+		}
+		.fb { @include replace-text( image-url("ico-fb.png") ); }
+		.tw { @include replace-text( image-url("ico-tw.png") ); }
+		.gp { @include replace-text( image-url("ico-gp.png") ); }
+		.in { @include replace-text( image-url("ico-in.png") ); }
+	}
+	.menu {
+		@include inline-block-list();
+		a {
+			font-size: 12px;
+			font-weight: 300;
+			padding: 0 3px 0 2px;
+		}
+		li:not(:last-child) a {
+			border-right: 1px solid $borderColor;
+		}
+		
+	}
+	.copyright {
+		font-weight: 300;
+		font-size: 12px;
+		margin-top: 5px;
+	}
+	
+}

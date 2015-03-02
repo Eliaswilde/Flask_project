@@ -1,0 +1,31 @@
+{% extends "bc_admin/model/list.html" %}
+
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('console.css', file_name='backers.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block tail %}
+{{ super() }}
+<script src="{{ url_for('console.js', file_name='backers.js') }}"></script>
+{% endblock %}
+
+{% block menu_bar_additional %}
+<li>
+    <a href="{{ backers_report_url }}" target="_blank">Export Backer Report</a>
+</li>
+<li>
+    <a href="{{ fulfillment_report_url }}" target="_blank">Export Fulfillment Report</a>
+</li>
+{% endblock %}
+
+{% block model_menu_bar %}
+{{ super() }}
+
+{% from "shared/form_field.html" import render_plain_field %}
+<div id="backers_custom_bar">
+    <form id="select_campaign_form">
+        {{ render_plain_field(campaigns_form.campaign) }}
+    </form>
+</div>
+{% endblock %}

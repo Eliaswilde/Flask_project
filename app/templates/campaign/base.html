@@ -1,0 +1,326 @@
+<html>
+	<!DOCTYPE html>
+	<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+	<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+	<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+	<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# fanbacked: http://ogp.me/ns/fb/fanbacked#">
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	    <meta name=viewport" content="width=1170">
+	    <title></title>
+
+        {% block header_meta %}{% endblock %}
+
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+	    <link rel="stylesheet" href="/c/campaign/static/css/styles.css">
+	    <link rel="stylesheet" href="/c/campaign/static/css/vendor/jquery.circliful.css">
+	    <link rel="stylesheet" href="/c/campaign/static/css/vendor/video-js.min.css">
+	    <link rel="stylesheet" href="/c/campaign/static/css/vendor/video-js-hu_skin.css">
+        <link rel="stylesheet" href="/c/campaign/static/css/font-awesome.min.css">
+
+		<script src="/c/campaign/static/js/vendor/jquery-1.10.1.min.js"></script>
+	    <script src="/c/campaign/static/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	    <script src="/c/campaign/static/js/vendor/bootstrap.min.js"></script>
+	    <script src="/c/campaign/static/js/vendor/jquery.circliful.min.js"></script>
+        <script src="/c/campaign/static/js/vendor/jquery.validate.js"></script>
+        <script src="/c/campaign/static/js/vendor/jquery.numeric.js"></script>
+	    <script src="/c/campaign/static/js/vendor/video.js"></script>
+        <script src="/c/campaign/static/js/vendor/youtube.js"></script>
+        <script src="/c/campaign/static/js/vendor/jquery.bootstrap.wizard.min.js"></script>
+	    <script src="/c/campaign/static/js/main.js"></script>
+        <script>
+            function socialShare(url,winWidth, winHeight) {
+                var winTop = (screen.height / 2) - (winHeight / 2);
+                var winLeft = (screen.width / 2) - (winWidth / 2);
+                window.open(url, 'Share It', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
+            }
+        </script>
+        <style>
+            ul.wysihtml5-toolbar {
+                margin: 0;
+                padding: 0;
+                display: block;
+            }
+
+            ul.wysihtml5-toolbar::after {
+                clear: both;
+                display: table;
+                content: "";
+            }
+
+            ul.wysihtml5-toolbar > li {
+                float: left;
+                display: list-item;
+                list-style: none;
+                margin: 0 5px 10px 0;
+            }
+
+            ul.wysihtml5-toolbar a[data-wysihtml5-command=bold] {
+                font-weight: bold;
+            }
+
+            ul.wysihtml5-toolbar a[data-wysihtml5-command=italic] {
+                font-style: italic;
+            }
+
+            ul.wysihtml5-toolbar a[data-wysihtml5-command=underline] {
+                text-decoration: underline;
+            }
+
+            ul.wysihtml5-toolbar a.btn.wysihtml5-command-active {
+                background-image: none;
+                -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15),0 1px 2px rgba(0, 0, 0, 0.05);
+                -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15),0 1px 2px rgba(0, 0, 0, 0.05);
+                box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15),0 1px 2px rgba(0, 0, 0, 0.05);
+                background-color: #E6E6E6;
+                background-color: #D9D9D9;
+                outline: 0;
+            }
+
+            ul.wysihtml5-commands-disabled .dropdown-menu {
+                display: none !important;
+            }
+
+            ul.wysihtml5-toolbar div.wysihtml5-colors {
+              display:block;
+              width: 50px;
+              height: 20px;
+              margin-top: 2px;
+              margin-left: 5px;
+              position: absolute;
+              pointer-events: none;
+            }
+
+            ul.wysihtml5-toolbar a.wysihtml5-colors-title {
+              padding-left: 70px;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="black"] {
+              background: black !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="silver"] {
+              background: silver !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="gray"] {
+              background: gray !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="maroon"] {
+              background: maroon !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="red"] {
+              background: red !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="purple"] {
+              background: purple !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="green"] {
+              background: green !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="olive"] {
+              background: olive !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="navy"] {
+              background: navy !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="blue"] {
+              background: blue !important;
+            }
+
+            ul.wysihtml5-toolbar div[data-wysihtml5-command-value="orange"] {
+              background: orange !important;
+            }
+
+            #outer-background-container {
+                display: block;
+                background: #000;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                position: fixed;
+                z-index: -2;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-position: center center;
+                background-size: cover;
+                }
+
+            .background-image-overlay {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+
+                }
+
+        </style>
+	</head>
+	<body class="home">
+    <div class="background-image-overlay" style="background-color: rgba(0,0,0,0.4);"></div>
+    <div id="outer-background-container" data-default-background-img="/www/static/img/bgx.jpg" style="background-image:url(/www/static/img/bgx.jpg);"></div>
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+	<header>
+		<div class="container-non-responsive" style="max-width:100% !important; width: 87%">
+			<div class="row">
+				<a href="/" class="pull-left logo-box">
+					<div class="logo">Fanbacked</div>
+				</a>
+				<div class="col-xs-8 text-right pull-right">
+                    <a class="link create-link hidden" href="{{ url_for('www.create') }}">Create</a>
+                    <a class="link discover-link hidden" href="{{ url_for('www.discover') }}">Discover</a>
+					<button class="btn btn-default btn-lg search-xs">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+					<form style="max-width: 250px;" role="search" class="hidden-xs  hidden">
+						<div class="input-group">
+						      <input type="text" class="form-control">
+						      <div class="input-group-btn">
+						        <button class="btn btn-default" type="submit">
+						        	&nbsp;
+						        	<span class="glyphicon glyphicon-search"></span>
+						        </button>
+						      </div>
+						</div>
+					</form>
+					{% if not user %}
+					<a href="#" class="sign-up link" data-toggle="modal" data-target="#signup">Sign Up</a>
+					<a href="#" class="link" data-toggle="modal" data-target="#login">Login</a>
+					{% else %}
+					<a href="/profile/" class="signed-up link">{{ user.first_name }} {{ user.last_name }}</a>
+					<a href="{{ url_for('.logout') }}?campaign_id={{ model.id }}" class="link">Logout</a>
+					{% endif %}
+					<div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-sm">
+					    <div class="modal-content">
+					      <div class="modal-header clearfix">
+					        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					        <h4 class="modal-title pull-left">Sign Up</h4>
+					        <a href="#" class="pull-right have-account">Already have an account <span class="question">?</span></a>
+					      </div>
+					      <div class="modal-body">
+					        	<p class="facebook-header">Sign up fast secure with your Facebook account <span>Save a password use Facebook</span></p>
+					        	<a href="{{ url_for('campaign.fb_login') }}" class="btn btn-default btn-lg btn-fb"><span>Login</span> with <span>Facebook</span></a>
+					        	<h2><span>Sign Up</span> With Your E-mail</h2>
+					        	{% from "shared/form_field.html" import render_field, render_checkbox_field %}
+					        	<form id="signup-form" method="post" action="{{ url_for('campaign.signup') }}">
+					        		{{ signup_form.csrf_token }}
+					        		<div class="form-group">
+					        			{{ render_field(signup_form.first_name) }}
+					        		</div>
+					        		<div class="form-group">
+					        			{{ render_field(signup_form.last_name) }}
+					        		</div>
+					        		<div class="form-group">
+					        			{{ render_field(signup_form.email) }}
+					        		</div>
+					        		<div class="form-group">
+					        			{{ render_field(signup_form.password) }}
+					        		</div>
+					        		<div class="form-group checkbox clearfix">
+					        			{{ render_checkbox_field(signup_form.receive_news) }}
+					        		</div>
+					        		<div class="form-group sign-up">
+					        			<label>By Signing up you are agree to our terms of use and privacy policy</label>
+					        			<button type="submit" class="btn btn-default btn-lg">Sign Up</button>
+					        		</div>
+					        	</form>
+					      </div>
+					    
+					    </div>
+					  </div>
+					</div>
+				  </div>
+				  <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  	  <div class="modal-dialog modal-sm">
+				  	    <div class="modal-content">
+				  	      <div class="modal-header clearfix">
+				  	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				  	        <h1 class="modal-title pull-left">Login</h1>
+				  	        <a href="#" class="pull-right have-account discover-me">New to Fanbacked <span class="question">?</span></a>
+				  	      </div>
+				  	      <div class="modal-body">
+				  	        	<p class="facebook-header">Sign up fast secure with your Facebook account <span>Save a password use Facebook</span></p>
+				  	        	<a href="{{ url_for('campaign.fb_login') }}" class="btn btn-default btn-lg btn-fb"><span>Login</span> with <span>Facebook</span></a>
+				  	        	<h2><span>Login</span> With Your E-mail</h2>
+				  	        	<form class="clearfix" method="post" action="{{ url_for('campaign.do_login') }}" id="login-form">
+				  	        		<div class="form-error" style="display: none;"></div>
+				  	        		{{ login_form.csrf_token }}
+				  	        		<div class="form-group">
+				  	        			{{ render_field(login_form.email) }}
+				  	        		</div>
+				  	        		<div class="form-group">
+				  	        			{{ render_field(login_form.password) }}
+				  	        		</div>
+				  	        		<div class="form-group checkbox2 clearfix">
+				  	        			{{ render_checkbox_field(login_form.remember_me) }}
+				  	        		</div>
+				  	        		<div class="pull-right">
+				  	        			<button type="submit" class="btn btn-default btn-lg btn-login">Login</button>
+				  	        		</div>
+				  	        	</form>
+                              <a href="/account/requestresetpassword/">Forgot password?</a>
+				  	      </div>
+
+				  	    </div>
+				  	  </div>
+				  	</div>
+				  </div>
+				  
+			</div>
+		</div>
+	</header>
+    
+
+    {% block content %}{% endblock %}
+
+   
+	<footer>
+   		<div class="container-non-responsive" style="max-width:100% !important; width: 87%">
+   			<div class="row">
+   				<div class="col-sm-3 text-center" style="width: 210px;">
+   					<div class="social" >
+   						<a class="" href="https://www.facebook.com/sharer/sharer.php?u=http%253A%252F%252Ffanbacked.com%252F"><span class="fa fa-facebook"></span></a>
+   						<a class="" href="https://twitter.com/share?url=http%3A%2F%2Ffanbacked.com%2F"><span class="fa fa-twitter"></span></a>
+   						<a  class="hidden" href="http://www.linkedin.com/sharer.php?u=http%3A%2F%2Ffanbacked.com%2F"><span class="fa fa-linkedin"></span></a>
+                        <a class="" href="https://plus.google.com/share?url=http%3A%2F%2Ffanbacked.com%2F"><span class="fa fa-google-plus"></span></a>
+   					</div>
+   					<ul class="menu">
+   						<li><a href="/">Home</a></li>
+   						<li><a href="{{ url_for('www.about') }}">About</a></li>
+   						<li><a href="{{ url_for('www.faq') }}">FAQ</a></li>
+   					</ul>
+   					<ul class="menu" style="padding-bottom: 10px">
+   						<li><a href="{{ url_for('www.terms') }}">Terms</a></li>
+   						<li><a href="{{ url_for('www.privacy') }}">Privacy</a></li>
+   					</ul>
+   					<p class="copyright">&copy; 2014 Fanbacked</p>
+   				</div>
+   			</div>
+   		</div>
+   </footer>
+    <script src="/console/static/console/lib/wysihtml5/advanced.js"></script>
+    <script src="/console/static/console/lib/wysihtml5/wysihtml5-0.3.0_rc2.js"></script>
+    <script src="/console/static/console/lib/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+    <script src="/www/static/js/vendor/jquery.backstretch.min.js"></script>
+
+
+
+	</body>
+</html>

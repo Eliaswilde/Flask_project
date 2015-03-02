@@ -1,0 +1,455 @@
+<html>
+	<!DOCTYPE html>
+	<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+	<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+	<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+	<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title></title>
+	    <meta name="description" content="">
+	
+	    <link rel="stylesheet" href="stylesheets/styles.css">
+	    <link rel="stylesheet" href="stylesheets/vendor/jquery.circliful.css">
+	    <link rel="stylesheet" href="stylesheets/vendor/video-js.min.css">
+	    <link rel="stylesheet" href="stylesheets/vendor/video-js-hu_skin.css">
+	    
+		<script src="javascripts/vendor/jquery-1.10.1.min.js"></script>
+	    <script src="javascripts/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	    <script src="javascripts/vendor/bootstrap.min.js"></script>
+	    <script src="javascripts/vendor/jquery.circliful.min.js"></script>
+	    <script src="javascripts/vendor/video.js"></script>
+	    <script src="javascripts/main.js"></script>   
+	</head>
+	<body class="home">
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+   
+	<header>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="logo">discover me</div>
+				</div>
+				<div class="col-xs-6 text-right">
+					<button class="btn btn-default btn-lg search-xs">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+					<form role="search" class="hidden-xs">
+						<div class="input-group">
+						      <input type="text" class="form-control">
+						      <div class="input-group-btn">
+						        <button class="btn btn-default" type="submit">
+						        	&nbsp;
+						        	<span class="glyphicon glyphicon-search"></span>
+						        </button>
+						      </div>
+						</div>
+					</form>
+					<a href="#" class="sign-up link" data-toggle="modal" data-target="#signup">Sign Up</a>
+					<a href="#" class="link" data-toggle="modal" data-target="#login">Login</a>
+					<div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-sm">
+					    <div class="modal-content">
+					      <div class="modal-header clearfix">
+					        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					        <h1 class="modal-title pull-left">Sign Up</h4>
+					        <a href="#" class="pull-right have-account">Already have an account <span class="question">?</span></a>
+					      </div>
+					      <div class="modal-body">
+					        	<p class="facebook-header">Sign up fast secure with your Facebook account <span>Save a password use Facebook</span></p>
+					        	<button class="btn btn-default btn-lg btn-fb"><span>Login</span> with <span>Facebook</span></button>
+					        	<h2><span>Sign Up</span> With Your E-mail</h2>
+					        	<form>
+					        		<div class="form-group">
+					        			<label>First Name*</label>
+					        			<input type="text" class="form-control" />
+					        		</div>
+					        		<div class="form-group">
+					        			<label>Last Name*</label>
+					        			<input type="text" class="form-control" />
+					        		</div>
+					        		<div class="form-group">
+					        			<label>E-Mail Adress*</label>
+					        			<input type="text" class="form-control" />
+					        		</div>
+					        		<div class="form-group">
+					        			<label>Password*</label>
+					        			<input type="password" class="form-control" />
+					        		</div>
+					        		<div class="form-group checkbox clearfix">
+					        			<input type="checkbox" />
+					        			<label>Receive Insider News to pre release deals and exclusive access</label>
+					        		</div>
+					        		<div class="form-group sign-up">
+					        			<label>By Signing up you are agree to our terms of use and privacy policy</label>
+					        			<button type="submit" class="btn btn-default btn-lg">Sign Up</button>
+					        		</div>
+					        	</form>
+					      </div>
+					    
+					    </div>
+					  </div>
+					</div>
+				  </div>
+				  <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				  	  <div class="modal-dialog modal-sm">
+				  	    <div class="modal-content">
+				  	      <div class="modal-header clearfix">
+				  	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				  	        <h1 class="modal-title pull-left">Login</h4>
+				  	        <a href="#" class="pull-right have-account discover-me">New to Discover me <span class="question">?</span></a>
+				  	      </div>
+				  	      <div class="modal-body">
+				  	        	<p class="facebook-header">Sign up fast secure with your Facebook account <span>Save a password use Facebook</span></p>
+				  	        	<button class="btn btn-default btn-lg btn-fb"><span>Login</span> with <span>Facebook</span></button>
+				  	        	<h2><span>Login</span> With Your E-mail</h2>
+				  	        	<form class="clearfix">
+				  	        		<div class="form-group">
+				  	        			<label>E-Mail Adress*</label>
+				  	        			<input type="text" class="form-control" />
+				  	        		</div>
+				  	        		<div class="form-group">
+				  	        			<label>Password*</label>
+				  	        			<input type="password" class="form-control" />
+				  	        		</div>
+				  	        		<div class="form-group checkbox2 clearfix">
+				  	        			<input type="checkbox" />
+				  	        			<label>Remember me</label>
+				  	        		</div>
+				  	        		<div class="pull-right">
+				  	        			<button type="submit" class="btn btn-default btn-lg btn-login">Login</button>
+				  	        		</div>
+				  	        	</form>
+				  	      </div>
+				  	    
+				  	    </div>
+				  	  </div>
+				  	</div>
+				  </div>
+				  
+			</div>
+		</div>
+	</header>
+    
+    <main>
+    	<div class="container">
+	    	<div class="row">
+		    	<div id="content" class="col-md-9">
+		    		<h3 class="page-header">Lorem ipsum dolor sit amet, consectetur adipisicing 
+		    		elit, sed do eiusmod<span class="author visible-xs">By: David Beckham</span><span class="author-sm visible-sm">By: David Beckham</span></h3>
+		    		
+		    		<div class="social hidden-xs clearfix">
+		    			<button class="btn btn-default pull-left" data-toggle="modal" data-target="#follow">
+		    				Follow &nbsp;
+		    				<span class="glyphicon glyphicon-plus"></span>
+		    			</button>
+		    			<a href="#" class="link pull-left">http://example.org/wiki/Page_title</a>
+		    			<div class="pull-right group">
+		    				<a href="#" class="btn btn-default fb">facebook</a>
+		    				<a href="#" class="btn btn-default tw">twitter</a>
+		    				<a href="#" class="btn btn-default in">linkedin</a>
+		    				<a href="#" class="btn btn-default gp">google+</a>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="modal fade" id="follow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    			  <div class="modal-dialog modal-sm">
+		    			    <div class="modal-content">
+		    			      <div class="modal-body">
+		    			      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    			 
+		    			      	<h1>Follow this Deal</h1>
+		    			      	<p>We will keep you updated on the progress of this deal and make sure to remind you before the deal ends
+		    			      	</p>
+		    			      	<h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit</h5>
+		    			      	<div class="video clearfix">
+		    			      		<a href="#" class="pull-left"><img src="images/tmp_6.jpg" alt="" /></a>
+		    			      		<p>By: David Beckham<span>Project Owner Title</span></p>
+		    			      	</div>
+		    			      </div>
+		    			    
+		    			    </div>
+		    			  </div>
+		    		</div>
+		    		
+		    		<div class="modal fade" id="comments" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    			  <div class="modal-dialog modal-md">
+		    			    <div class="modal-content">
+		    			      <div class="modal-body clearfix">
+		    			      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		    			 
+		    			      	<h1>Ask a Question / Leave a Comment</h1>
+		    			      	<p>Have something to say about this deal? Ask question or leave a comment below?</p>
+		    			      	<div class="comment clearfix">
+		    			      		<img src="images/tmp_1.jpg" alt="" class="pull-left" />
+		    			      		<textarea></textarea>
+		    			      		<span class="caret"></span>
+		    			      		<p class="char-remaining">0/500</p>
+		    			      	</div>
+		    			      	<div class="checkbox3 clearfix">
+			    			      	<div class="form-group">
+			    			      		<input type="checkbox"/>
+			    			      		<label>Private comment to producer only</label>
+		    			      		</div>
+		    			      		<button type="submit" class="btn btn-default btn-lg">Submit</button>
+		    			      	</div>
+		    			      </div>
+		    			    
+		    			    </div>
+		    			  </div>
+		    		
+		    		</div>
+		    		
+		    		
+		    		<div id="carousel-video" class="carousel slide" data-ride="carousel">
+			    		  <ol class="carousel-indicators hidden-xs">
+			    		    <li data-target="#carousel-video" data-slide-to="0" class="active"></li>
+			    		    <li data-target="#carousel-video" data-slide-to="1"></li>
+			    		    <li data-target="#carousel-video" data-slide-to="2"></li>
+			    		  </ol>
+			    		  <div class="carousel-inner">
+				    		   <div class="item active">
+				    		      <video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered"
+				    		        controls preload="auto" width="100%" height="451"
+				    		        poster="images/tmp_3.jpg"
+				    		        data-setup='{"example_option":true}'>
+				    		       <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
+				    		       <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
+				    		       <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
+				    		      </video>			    		    
+				    		   </div>
+				    		   <div class="item">
+				    		    	<video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered"
+				    		    	  controls preload="auto" width="100%" height="451"
+				    		    	  poster="images/tmp_3.jpg"
+				    		    	  data-setup='{"example_option":true}'>
+				    		    	 <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
+				    		    	 <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
+				    		    	 <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
+				    		    	</video>		
+				    		   </div>
+				    		   <div class="item">
+				    		   		<video id="example_video_1" class="video-js vjs-default-skin vjs-big-play-centered"
+				    		   		  controls preload="auto" width="100%" height="451"
+				    		   		  poster="images/tmp_3.jpg"
+				    		   		  data-setup='{"example_option":true}'>
+				    		   		 <source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
+				    		   		 <source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
+				    		   		 <source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
+				    		   		</video>		
+				    		   </div>
+			    		  </div>
+		    		</div>
+		    		
+		    		<div class="sidebar visible-sm">
+		    			<div class="row">
+	    					<div class="col-sm-5 project">
+	    						<img src="images/tmp_1.jpg" alt="" class="img pull-left" />
+	    						<p class="description">By: <span class="owner">David Beckham</span><span class="title">Project Title</span></p>
+	    						<button class="btn btn-default hidden-xs">Contact Owner</button>
+	    					</div>
+		    				<div class="col-sm-7 back-this-project">
+		    					<div class="myStat pull-left" data-dimension="125" data-text="30%" data-width="15" data-fontsize="22" data-percent="30" data-fgcolor="#fff" data-bgcolor="#0d0d0d"></div>
+		    					<p class="pull-left">$ 84000<span>of $ 120000</span></p>
+		    					<h4 class="pull-left">25 Days Left</h4>
+		    					<div class="btn-container">
+		    						<button class="btn btn-default">Back this Project</button>
+		    					</div>
+		    				</div>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="navigation hidden-xs">
+		    			<ul>
+		    				<li class="active"><a href="#">Summary</a></li>
+		    				<li><a href="#" data-toggle="modal" data-target="#comments">Comments<span>23</span></a></li>
+		    				<li><a href="#">Backers<span>23</span></a></li>
+		    				<li><a href="#">Updates<span>23</span></a></li>
+		    			</ul>
+		    		</div>
+		    		
+		    		<article class="hidden-xs">
+		    			<h4>Campaign Description</h4>
+		    			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		    			<p class="media"><img src="images/tmp_4.jpg" alt="" class="pull-left" />Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		    			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		    		</article>
+		    		<article class="last hidden-xs">
+		    			<h4>Most Recent Campaign Updates</h4>
+		    			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		    			<p class="media"><img src="images/tmp_5.jpg" alt="" class="pull-left" />Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		    			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		    			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		    		</article>
+		    		
+		    		<div class="sidebar visible-sm sidebar-sm">
+		    			<div class="row">
+		    				<div class="col-sm-4">
+		    					<div class="product">
+		    						<p class="stats"><span class="price">$10</span> <span class="claimed">20</span> out of 100 Claimed</p>
+		    						<h6>Reward numberone title</h6>
+		    						<img src="images/tmp_2.jpg" alt="" class="center-block img" />
+		    						<p class="description">perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem</p>
+		    					</div>
+		    				</div>
+		    				<div class="col-sm-4">
+		    					<div class="product">
+		    						<p class="stats"><span class="price">$10</span> <span class="claimed">20</span> out of 100 Claimed</p>
+		    						<h6>Reward numberone title</h6>
+		    						<img src="images/tmp_2.jpg" alt="" class="center-block img" />
+		    						<p class="description">perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem</p>
+		    					</div>
+		    				</div>		
+		    				<div class="col-sm-4">
+		    					<div class="product">
+		    						<p class="stats"><span class="price">$10</span> <span class="claimed">20</span> out of 100 Claimed</p>
+		    						<h6>Reward numberone title</h6>
+		    						<img src="images/tmp_2.jpg" alt="" class="center-block img" />
+		    						<p class="description">perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem</p>
+		    					</div>
+		    				</div>
+		    				<div class="col-sm-4">
+		    					<div class="product">
+		    						<p class="stats"><span class="price">$10</span> <span class="claimed">20</span> out of 100 Claimed</p>
+		    						<h6>Reward numberone title</h6>
+		    						<img src="images/tmp_2.jpg" alt="" class="center-block img" />
+		    						<p class="description">perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem</p>
+		    					</div>
+		    				</div>
+		    				<div class="col-sm-4">
+		    					<div class="product">
+		    						<p class="stats"><span class="price">$10</span> <span class="claimed">20</span> out of 100 Claimed</p>
+		    						<h6>Reward numberone title</h6>
+		    						<img src="images/tmp_2.jpg" alt="" class="center-block img" />
+		    						<p class="description">perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem</p>
+		    					</div>
+		    				</div>
+		    				<div class="col-sm-4">
+		    					<div class="product">
+		    						<p class="stats"><span class="price">$10</span> <span class="claimed">20</span> out of 100 Claimed</p>
+		    						<h6>Reward numberone title</h6>
+		    						<img src="images/tmp_2.jpg" alt="" class="center-block img" />
+		    						<p class="description">perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem</p>
+		    					</div>
+		    				</div>
+		    				
+		    			</div>
+		    		</div>
+		    		
+				</div>
+			
+				<div class="sidebar col-md-3 hidden-sm">
+					<div class="project hidden-sm clearfix">
+						<img src="images/tmp_1.jpg" alt="" class="img pull-left" />
+						<p class="description">By: <span class="owner">David Beckham</span><span class="title">Project Title</span></p>
+						<button class="btn btn-default hidden-xs">Contact Owner</button>
+						<button class="btn btn-default btn-lg pull-right visible-xs">
+							<span class="glyphicon glyphicon-plus"></span>
+							&nbsp; Follow
+						</button>
+					</div>
+					
+					<div class="back-this-project hidden-xs">
+						<h4>25 Days Left</h4>
+						<div class="myStat center-block" data-dimension="125" data-text="30%" data-width="15" data-fontsize="22" data-percent="30" data-fgcolor="#fff" data-bgcolor="#0d0d0d"></div>
+						<p class="center-block">$ 84000<span>of $ 120000</span></p>
+						<button class="btn btn-default">Back this Project</button>
+					</div>
+					
+					<div class="back-this-project visible-xs">
+						<div class="myStat pull-left" data-dimension="125" data-text="30%" data-width="15" data-fontsize="22" data-percent="30" data-fgcolor="#fff" data-bgcolor="#0d0d0d"></div>
+						<p class="pull-left">$ 84000<span>of $ 120000</span></p>
+						<h4 class="pull-left">25 Days Left</h4>
+						<div class="btn-container">
+							<button class="btn btn-default">Back this Project</button>
+						</div>
+					</div>
+					
+					<div class="campaign-description visible-xs clearfix">
+						<h3>Campaign Description</h3>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+						<button class="btn btn-default pull-right">
+							More
+							<span class="circle"></span>
+							<span class="circle"></span>
+							<span class="circle"></span>
+						</button>
+					</div>
+					
+					<div class="navigation visible-xs">
+						<ul class="list-group">
+						  <li class="list-group-item"><a href="#">Summary</a></li>
+						  <li class="list-group-item"><a href="#">Comments (30)</a><span class="glyphicon glyphicon-chevron-right"></span></li>
+						  <li class="list-group-item"><a href="#">Backers (10)</a><span class="glyphicon glyphicon-chevron-right"></span></li>
+						  <li class="list-group-item"><a href="#">Updates</a></li>
+						</ul>
+					</div>
+					
+					<div class="product">
+						<p class="stats"><span class="price">$10</span> <span class="claimed">20</span> out of 100 Claimed</p>
+						<h6>Reward numberone title</h6>
+						<img src="images/tmp_2.jpg" alt="" class="center-block img" />
+						<p class="description">perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem</p>
+					</div>
+					<div class="product">
+						<p class="stats"><span class="price">$10</span> <span class="claimed">20</span> out of 100 Claimed</p>
+						<h6>Reward numberone title</h6>
+						<img src="images/tmp_2.jpg" alt="" class="center-block img" />
+						<p class="description">perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem</p>
+					</div>
+					<div class="product">
+						<p class="stats"><span class="price">$10</span> <span class="claimed">20</span> out of 100 Claimed</p>
+						<h6>Reward numberone title</h6>
+						<img src="images/tmp_2.jpg" alt="" class="center-block img" />
+						<p class="description">perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem</p>
+					</div>
+					
+					<div class="follow-comments hidden-xs">
+						<button class="btn btn-default">
+							Follow &nbsp;
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+						<button class="btn btn-default btn-questions">Questions/Comments</button>
+					</div>
+				</div>
+				
+	    	</div>
+    	</div>
+    </main>	
+   
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 col-md-2 social hidden-xs">
+					<a href="#" class="tw">twitter</a>
+					<a href="#" class="fb">facebook</a>
+					<a href="#" class="gp">google+</a>
+					<a href="#" class="in">linkedin</a>
+				</div>
+				<div class="col-sm-8 col-md-5 hidden-xs subscribe">
+					<p class="pull-left">Sign Up For<span>Insider News</span></p>
+					<form class="form-inline">
+						<input type="text" class="form-control" />
+						<button type="sumbit" class="btn btn-default">Subscribe</button>
+					</form>
+				</div>
+				<div class="col-sm-12 col-md-5 navigation">
+					<ul>
+						<li><a href="#">Home</a></li>
+						<li><a href="#">About</a></li>
+						<li><a href="#">Blog</a></li>
+						<li><a href="#">Legal</a></li>
+						<li><a href="#">FAQ</a></li>
+						<li><a href="#">Contact</a></li>
+					</ul>
+					<p class="hidden-xs">© Copyright All Rights Reserved</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+	</body>
+</html>
